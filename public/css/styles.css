@@ -1,0 +1,43 @@
+﻿body {
+	font-family: "Helvetica Neue",Helvetica,Arial,sans-serif;
+	font-size: 14px;
+	color: #333;
+    padding-bottom: 50px;
+}
+
+.navbar-top {
+    margin-top: 60px;
+}
+
+.longDesc {
+    white-space: nowrap;
+    overflow: hidden;
+    min-width: 50px;
+    max-width: 100px;
+    text-overflow: ellipsis;
+}
+
+table button.remove {
+    margin-right: 5px;
+}
+
+#add-edit-form {
+	width: 400px;
+	margin: 0px auto;
+}
+
+#add-edit-form div {
+	margin: 10px 0px;
+	text-align: right;
+}
+
+#add-edit-form input, #add-edit-form select {
+	width: 300px;
+}
+
+@media screen and (max-width: 768px) {
+	.container {
+		width: 600px;
+	}
+
+}
