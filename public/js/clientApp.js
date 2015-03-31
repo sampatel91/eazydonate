@@ -10,6 +10,10 @@ app.controller("OnlineUniversityController", function ($scope, $http) {
         $scope.courses = response;
     });
 
+    /*
+        Modals for the app    
+    */
+
     // opens modal with form to add a course
     $scope.openAddModal = function () {
         $scope.submitCourse = $scope.addCourse;
@@ -22,6 +26,12 @@ app.controller("OnlineUniversityController", function ($scope, $http) {
         $('#courseModal').modal('show');
     };
 
+    // opens modal with form to remove a course
+    $scope.openRemoveModal = function (course, index) {
+        $scope.removeIndex = index;
+        $('#removeModal').modal('show');
+    };
+
     // opens modal with populated fields in the form
     // from previous data
     $scope.openEditModal = function (course, index) {
@@ -31,6 +41,10 @@ app.controller("OnlineUniversityController", function ($scope, $http) {
         $scope.newCourse = course;
         $('#courseModal').modal('show');
     };
+
+    /*
+        Functions in scope to add functionality to app
+    */
 
     // updates course with new data at $scope.editIndex
     $scope.editCourse = function (updatedCourse) {
@@ -51,13 +65,17 @@ app.controller("OnlineUniversityController", function ($scope, $http) {
     };
 
     // removes course at index from database
-    $scope.removeCourse = function (course, index) {
-        $http.delete('/api/course/' + index).
+    $scope.removeCourse = function () {
+        $http.delete('/api/course/' + $scope.removeIndex).
 		success(function (response) {
 		    $scope.courses = response;
 		});
+        $('#removeModal').modal('hide');
     };
 
+    /*
+    Utility Methods
+    */
     // formats dateCreated value to be more human-readable
     $scope.formatDate = function (date) {
         date = new Date(date);
