@@ -21,6 +21,18 @@ table button.edit {
     margin-right: 5px;
 }
 
+.list-group li {
+    list-style: none;
+}
+.panel-info, .panel-rating, .panel-more1 {
+    float: left;
+    margin: 0 10px;
+}
+
+.input-group {
+    width: 75%;
+}
+
 #add-edit-form {
 	width: 400px;
 	margin: 0px auto;
