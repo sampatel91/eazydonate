@@ -33,6 +33,12 @@ table button.edit {
     width: 75%;
 }
 
+.page-links li:hover {
+    color: #fff;
+    background-color: #5bc0de;
+    border-color: #46b8da;
+}
+
 #add-edit-form {
 	width: 400px;
 	margin: 0px auto;
