@@ -35,8 +35,16 @@ table button.edit {
 
 .page-links li:hover {
     color: #fff;
-    background-color: #5bc0de;
-    border-color: #46b8da;
+    background-color: #337ab7;
+    border-color: #2e6da4;
+}
+
+.navbar-right li {
+    padding: 8px;
+}
+
+.navbar-form .input-group {
+    margin-left: 50px;
 }
 
 #add-edit-form {
