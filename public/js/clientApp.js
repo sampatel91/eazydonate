@@ -24,8 +24,10 @@ app.controller("EazyDonateController", function ($scope, $http) {
     };
 
     $scope.userLogIn = function () {
+        $scope.user = { name: "User X" };
         $('#logInModal').modal('hide');
-        alert('You are Signed In');
+        $('.navbar-right').find('button.loggedOut').addClass('hidden');
+        $('.navbar-right').find('button.loggedIn').removeClass('hidden');
     };
 
     $scope.userSignUp = function () {
@@ -33,7 +35,12 @@ app.controller("EazyDonateController", function ($scope, $http) {
         $('#signUpModal').modal('hide');
         $('.navbar-right').find('button.loggedOut').addClass('hidden');
         $('.navbar-right').find('button.loggedIn').removeClass('hidden');
-        $('.navbar-top').find('a.loggedIn').removeClass('hidden');
+    };
+
+    $scope.showResultsPage = function ($index, name) {
+        var $panel = $('#center-panel');
+        $panel.empty();
+        $panel.load('result-page.html');
     }
 
 });

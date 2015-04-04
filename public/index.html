@@ -1,6 +1,5 @@
 ﻿<!--
     Add modals to separate files and load the conten when they are opened
-    Ng-repeat for east and west panel
 -->
 <!DOCTYPE html>
 <html lang="en">
@@ -182,16 +181,9 @@
                                 <h2 class="panel-title text-center">Categories</h2>
                             </div>
                             <ul class="list-group page-links">
-                                <li ng-repeat="category in categories" class="list-group-item btn" typeof="button">{{category}}</li>
+                                <li ng-repeat="category in categories" ng-click="showResultsPage($index, category)"
+                                     class="list-group-item btn" typeof="button">{{category}}</li>
                             </ul>
-                            <!--
-                            <ul class="list-group page-links">
-                                <li class="list-group-item btn" typeof="button">Education</li>
-                                <li class="list-group-item btn" typeof="button">Shelter</li>
-                                <li class="list-group-item btn" typeof="button">Food</li>
-                                <li class="list-group-item btn" typeof="button">Animals</li>
-                                <li class="list-group-item btn" typeof="button">Cancer</li>
-                            </ul>-->
                         </div>
                     </div>
                     <div class="col-md-8" id="center-panel"></div>
@@ -201,11 +193,7 @@
                                 <h3 class="panel-title text-center">Charities</h3>
                             </div>
                             <ul class="list-group page-links">
-                                <li class="list-group-item btn" typeof="button">Education</li>
-                                <li class="list-group-item btn" typeof="button">Shelter</li>
-                                <li class="list-group-item btn" typeof="button">Food</li>
-                                <li class="list-group-item btn" typeof="button">Animals</li>
-                                <li class="list-group-item btn" typeof="button">Cancer</li>
+                                <li ng-repeat="charity in charities" ng-click="showResultsPage($index, charity)" class="list-group-item btn" typeof="button">{{charity}}</li>
                             </ul>
                         </div>
                     </div>
