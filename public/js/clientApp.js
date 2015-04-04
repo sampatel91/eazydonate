@@ -9,6 +9,7 @@ app.controller("EazyDonateController", function ($scope, $http) {
 
     $scope.categories = ["Education", "Shelter", "Food", "Health", "Cancer"];
     $scope.charities = ["Read Cross", "UNICEF", "WHO", "Gates Foundation", "Blue Shield"];
+    
 
     // opens modal with form to add a course
     $scope.openLogInModal = function () {
@@ -41,6 +42,12 @@ app.controller("EazyDonateController", function ($scope, $http) {
         var $panel = $('#center-panel');
         $panel.empty();
         $panel.load('result-page.html');
-    }
+    };
+
+    $scope.openCharityPage = function ($index, name) {
+        var $panel = $('#center-panel');
+        $panel.empty();
+        $panel.load('charity-page.html');
+    };
 
 });
