@@ -5,8 +5,11 @@
     padding-bottom: 50px;
 }
 
+body.modal-open {margin-right: 0px}
+
 .navbar-top {
     margin-top: 60px;
+    padding-right: 17px;
 }
 
 .longDesc {
@@ -48,7 +51,7 @@ table button.edit {
 }
 
 #add-edit-form {
-	width: 400px;
+	width: 435px;
 	margin: 0px auto;
 }
 

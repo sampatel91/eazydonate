@@ -1,4 +1,7 @@
-﻿
+﻿<!--
+    Add modals to separate files and load the conten when they are opened
+    Ng-repeat for east and west panel
+-->
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -19,10 +22,8 @@
 </head>
 
 <body ng-app="EazyDonate">
-    <header></header>
-    <div class="container">
+    <div ng-controller="EazyDonateController">
         <header>
-            <!--bootstrap navbar-->
             <div class="navbar-top">
                 <nav class="navbar navbar-inverse navbar-fixed-top">
                     <div class="container">
@@ -46,13 +47,19 @@
                                     </div>
                                 </form>
                             </div>
-                            <div class="col-sm-2">
+                            <div class="col-sm-3 pull-right">
                                 <ul class="nav navbar-nav navbar-right">
                                     <li>
-                                        <button class="btn btn-primary" type="button" href="#">Log In</button>
+                                        <button class="btn btn-primary loggedOut" ng-click="openLogInModal()" type="button" href="#">Log In</button>
                                     </li>
                                     <li>
-                                        <button class="btn btn-primary" type="button" href="#">Sign Up</button>
+                                        <button class="btn btn-primary loggedOut" ng-click="openSignUpModal()" type="button" href="#">Sign Up</button>
+                                    </li>
+                                    <li>
+                                        <button class="btn btn-primary loggedIn hidden" type="button" href="#">{{user.name}}</button>
+                                    </li>
+                                    <li>
+                                        <button class="btn btn-primary loggedIn hidden" ng-click="openLogOutModal()" type="button" href="#">Log Out</button>
                                     </li>
                                 </ul>
                             </div>
@@ -60,102 +67,152 @@
                     </div>
                 </nav>
             </div>
+            <div class="modal fade" id="logInModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                            <h4 class="modal-title" id="myModalLabel">Log In</h4>
+                        </div>
+                        <div class="modal-body">
+                            <div id="add-edit-dialog">
+                                <form id="add-edit-form">
+                                    <div>
+                                        <label for="dateCreated">Email:</label>
+                                        <input name="dateCreated" type="text">
+                                    </div>
+                                    <div>
+                                        <label for="description">Password:</label>
+                                        <input name="description" type="text">
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+                            <button id="close" type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+                            <button id="confirmDel" type="button" class="btn btn-primary" ng-click="userLogIn()">Log In</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal fade" id="signUpModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                            <h4 class="modal-title" id="myModalLabel">Create an account</h4>
+                        </div>
+                        <div class="modal-body">
+                            <div id="add-edit-dialog">
+                                <form id="add-edit-form">
+                                    <div>
+                                        <label for="name">Full Name:</label>
+                                        <input name="name" type="text" ng-model="newCourse.name">
+                                    </div>
+                                    <div>
+                                        <label for="category">Gender:</label>
+                                        <select name="category" ng-model="newCourse.category">
+                                            <option value="">Select One</option>
+                                            <option value="PROG">Male</option>
+                                            <option value="DB">Female</option>
+                                        </select>
+                                    </div>
+                                    <div>
+                                        <label for="dateCreated">Age:</label>
+                                        <input name="dateCreated" type="date" ng-model="newCourse.dateCreated">
+                                    </div>
+                                    <div>
+                                        <label for="description">Email:</label>
+                                        <input name="description" type="text" ng-model="newCourse.description">
+                                    </div>
+                                    <div>
+                                        <label for="description">Password:</label>
+                                        <input name="description" type="text" ng-model="newCourse.description">
+                                    </div>
+                                    <div>
+                                        <label for="description">Confirm Password:</label>
+                                        <input name="description" type="text" ng-model="newCourse.description">
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+                            <button id="close" type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+                            <button id="confirmDel" type="button" class="btn btn-primary" ng-click="userSignUp()">Submit</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal fade" id="logOutModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                            <h4 class="modal-title" id="myModalLabel">Log In</h4>
+                        </div>
+                        <div class="modal-body">
+                            <div id="add-edit-dialog">
+                                <form id="add-edit-form">
+                                    <div>
+                                        <label for="dateCreated">Email:</label>
+                                        <input name="dateCreated" type="text">
+                                    </div>
+                                    <div>
+                                        <label for="description">Password:</label>
+                                        <input name="description" type="text">
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+                            <button id="close" type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+                            <button id="confirmDel" type="button" class="btn btn-primary" ng-click="userLogIn()">Log In</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </header>
-        <div class="row">
-            <div>
-                <h3>
-                    The problem we are looking to fix is that donating to charities online isn’t a
-                    streamlined process. We want to make donating to charity as easy as ordering from
-                    amazon while making sure the quality of charities receiving this money is worthy
-                    of our users money. Our system will make it easy for our users to find a charity
-                    that resembles what our user would like to support, let the user know where their
-                    money is going, and make it a easy payment process.
-                </h3>
-            </div>
-        </div>
-        <div class="row">
-            <div class="col-md-2">
-                <div class="panel panel-default">
-                    <div class="panel-heading">
-                        <h2 class="panel-title text-center">Categories</h2>
+        <div class="container">
+            <main>
+                <div id="north-panel"class="row"></div>
+                <div class="row">
+                    <div class="col-md-2 east-panel">
+                        <div class="panel panel-default">
+                            <div class="panel-heading">
+                                <h2 class="panel-title text-center">Categories</h2>
+                            </div>
+                            <ul class="list-group page-links">
+                                <li ng-repeat="category in categories" class="list-group-item btn" typeof="button">{{category}}</li>
+                            </ul>
+                            <!--
+                            <ul class="list-group page-links">
+                                <li class="list-group-item btn" typeof="button">Education</li>
+                                <li class="list-group-item btn" typeof="button">Shelter</li>
+                                <li class="list-group-item btn" typeof="button">Food</li>
+                                <li class="list-group-item btn" typeof="button">Animals</li>
+                                <li class="list-group-item btn" typeof="button">Cancer</li>
+                            </ul>-->
+                        </div>
                     </div>
-                    <ul class="list-group page-links">
-                        <li class="list-group-item btn" typeof="button">Education</li>
-                        <li class="list-group-item btn" typeof="button">Shelter</li>
-                        <li class="list-group-item btn" typeof="button">Food</li>
-                        <li class="list-group-item btn" typeof="button">Animals</li>
-                        <li class="list-group-item btn" typeof="button">Cancer</li>
-                    </ul>
-                </div>
-            </div>
-            <div class="col-md-8">
-                <ul class="list-group">
-                    <li>
+                    <div class="col-md-8" id="center-panel"></div>
+                    <div class="col-md-2 west-panel">
                         <div class="panel panel-default">
                             <div class="panel-heading">
-                                <h3 class="panel-title">Red Cross</h3>
+                                <h3 class="panel-title text-center">Charities</h3>
                             </div>
-                            <div class="panel-body">
-                                <h1>Lets Go!!</h1>
-                            </div>
+                            <ul class="list-group page-links">
+                                <li class="list-group-item btn" typeof="button">Education</li>
+                                <li class="list-group-item btn" typeof="button">Shelter</li>
+                                <li class="list-group-item btn" typeof="button">Food</li>
+                                <li class="list-group-item btn" typeof="button">Animals</li>
+                                <li class="list-group-item btn" typeof="button">Cancer</li>
+                            </ul>
                         </div>
-                    </li>
-                    <li>
-                        <div class="panel panel-default">
-                            <div class="panel-heading">
-                                <h3 class="panel-title">UNICEF</h3>
-                            </div>
-                            <div class="panel-body">
-                                <h1>Lets Go!!</h1>
-                            </div>
-                        </div>
-                    </li>
-                    <li>
-                        <div class="panel panel-default">
-                            <div class="panel-heading">
-                                <h3 class="panel-title">XYZ</h3>
-                            </div>
-                            <div class="panel-body">
-                                <h1>Lets Go!!</h1>
-                            </div>
-                        </div>
-                    </li>
-                    <li>
-                        <div class="panel panel-default">
-                            <div class="panel-heading">
-                                <h3 class="panel-title">Red Cross</h3>
-                            </div>
-                            <div class="panel-body">
-                                <h1>Lets Go!!</h1>
-                            </div>
-                        </div>
-                    </li>
-                    <li>
-                        <div class="panel panel-default">
-                            <div class="panel-heading">
-                                <h3 class="panel-title">Red Cross</h3>
-                            </div>
-                            <div class="panel-body">
-                                <h1>Lets Go!!</h1>
-                            </div>
-                        </div>
-                    </li>
-                </ul>
-            </div>
-            <div class="col-md-2">
-                <div class="panel panel-default">
-                    <div class="panel-heading">
-                        <h3 class="panel-title text-center">Charities</h3>
                     </div>
-                    <ul class="list-group page-links">
-                        <li class="list-group-item btn" typeof="button">Education</li>
-                        <li class="list-group-item btn" typeof="button">Shelter</li>
-                        <li class="list-group-item btn" typeof="button">Food</li>
-                        <li class="list-group-item btn" typeof="button">Animals</li>
-                        <li class="list-group-item btn" typeof="button">Cancer</li>
-                    </ul>
                 </div>
-            </div>
+                
+            </main>
+
         </div>
     </div>
 </body>

@@ -1,95 +1,39 @@
 ﻿//angular app instance
-var app = angular.module("OnlineUniversity", []);
+var app = angular.module("EazyDonate", []);
 
 //controller for the app
-app.controller("OnlineUniversityController", function ($scope, $http) {
+app.controller("EazyDonateController", function ($scope, $http) {
 
-    // Initial rendering of courses
-    $http.get("/api/courses")
-    .success(function (response) {
-        $scope.courses = response;
-    });
+    $('#north-panel').load('header.html');
+    $('#center-panel').load('charity-posts.html');
 
-    /*
-        Modals for the app    
-    */
+    $scope.categories = ["Education", "Shelter", "Food", "Health", "Cancer"];
+    $scope.charities = ["Read Cross", "UNICEF", "WHO", "Gates Foundation", "Blue Shield"];
 
     // opens modal with form to add a course
-    $scope.openAddModal = function () {
-        $scope.submitCourse = $scope.addCourse;
-        if ($scope.form) {
-            $scope.form.$setPristine();
-            $scope.form.$setUntouched();
-        }
-        var today = new Date();
-        $scope.newCourse = { name: "", category: "", dateCreated: today, description: "" };
-        $('#courseModal').modal('show');
+    $scope.openLogInModal = function () {
+        $('#logInModal').modal('show');
     };
 
-    // opens modal with form to remove a course
-    $scope.openRemoveModal = function (course, index) {
-        $scope.removeIndex = index;
-        $('#removeModal').modal('show');
+    $scope.openSignUpModal = function () {
+        $('#signUpModal').modal('show');
     };
 
-    // opens modal with populated fields in the form
-    // from previous data
-    $scope.openEditModal = function (course, index) {
-        $scope.submitCourse = $scope.editCourse;
-        $scope.editIndex = index;
-        course.dateCreated = new Date(course.dateCreated);
-        $scope.newCourse = course;
-        $('#courseModal').modal('show');
+    $scope.openLogOutModal = function () {
+        $('#logOutModal').modal('show');
     };
 
-    /*
-        Functions in scope to add functionality to app
-    */
-
-    // updates course with new data at $scope.editIndex
-    $scope.editCourse = function (updatedCourse) {
-        $('#courseModal').modal('hide');
-        $http.put('/api/course/' + $scope.editIndex, updatedCourse).
-		success(function (response) {
-		    $scope.courses = response;
-		});
+    $scope.userLogIn = function () {
+        $('#logInModal').modal('hide');
+        alert('You are Signed In');
     };
 
-    // adds course to database
-    $scope.addCourse = function (newCourse) {
-        $('#courseModal').modal('hide');
-        $http.post('/api/courses', newCourse).
-		success(function (response) {
-		    $scope.courses = response;
-		});
-    };
-
-    // removes course at index from database
-    $scope.removeCourse = function () {
-        $http.delete('/api/course/' + $scope.removeIndex).
-		success(function (response) {
-		    $scope.courses = response;
-		});
-        $('#removeModal').modal('hide');
-    };
-
-    /*
-    Utility Methods
-    */
-    // formats dateCreated value to be more human-readable
-    $scope.formatDate = function (date) {
-        date = new Date(date);
-        var month = dateFormat(date.getMonth() + 1);
-        var day = dateFormat(date.getDate());
-        return month + '/' + day + '/' + date.getFullYear();
-    };
-
-    // Pads single digit number with leading zeroes
-    function dateFormat(n) {
-        if (n >= 10)
-            return n;
-        else
-            return "0" + n;
+    $scope.userSignUp = function () {
+        $scope.user = { name: "User X" };
+        $('#signUpModal').modal('hide');
+        $('.navbar-right').find('button.loggedOut').addClass('hidden');
+        $('.navbar-right').find('button.loggedIn').removeClass('hidden');
+        $('.navbar-top').find('a.loggedIn').removeClass('hidden');
     }
 
 });
