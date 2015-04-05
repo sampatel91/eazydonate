@@ -17,51 +17,51 @@
     <script src="js/jquery-ui.js"></script>
     <script src="js/angular.min.js"></script>
     <script src="js/angular-route.js"></script>
-    <script src="js/clientApp.js"></script>
+    <script src="js/app.js"></script>
 </head>
 
 <body ng-app="EazyDonate">
-    <div ng-controller="EazyDonateController">
-        <header>
+    <div class="container">
+        <div ng-controller="NavbarCtrl">
             <div class="navbar-top">
                 <nav class="navbar navbar-inverse navbar-fixed-top">
-                    <div class="container">
-                        <div class="navbar-header">
-                            <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
-                                <span class="sr-only">Toggle navigation</span>
-                                <span class="icon-bar"></span>
-                                <span class="icon-bar"></span>
-                                <span class="icon-bar"></span>
-                            </button>
-                            <a class="navbar-brand" href="#">EazyDonate</a>
-                        </div>
-                        <div id="navbar" class="collapse navbar-collapse">
-                            <div class="col-sm-7 col-md-7">
-                                <form class="navbar-form" role="search">
-                                    <div class="input-group">
-                                        <input type="text" class="form-control" placeholder="Search" name="srch-term" id="srch-term">
-                                        <div class="input-group-btn">
-                                            <button class="btn btn-default" type="submit"><i class="glyphicon glyphicon-search"></i></button>
-                                        </div>
+                    <div class="navbar-header">
+                        <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
+                            <span class="sr-only">Toggle navigation</span>
+                            <span class="icon-bar"></span>
+                            <span class="icon-bar"></span>
+                            <span class="icon-bar"></span>
+                        </button>
+                        <a class="navbar-brand" href="#/home">EazyDonate</a>
+                    </div>
+                    <div id="navbar" class="collapse navbar-collapse">
+                        <div class="col-sm-5">
+                            <form class="navbar-form" role="search">
+                                <div class="input-group">
+                                    <input type="text" ng-model="search.title" class="form-control" placeholder="Search" name="srch-term" id="srch-term">
+                                    <div class="input-group-btn">
+                                        <a class="btn btn-default" href="#/results" typeof="button">
+                                            <i ng-click="showSearchResults(search)" class="glyphicon glyphicon-search"></i>
+                                        </a>
                                     </div>
-                                </form>
-                            </div>
-                            <div class="col-sm-3 pull-right">
-                                <ul class="nav navbar-nav navbar-right">
-                                    <li>
-                                        <button class="btn btn-primary loggedOut" ng-click="openLogInModal()" type="button" href="#">Log In</button>
-                                    </li>
-                                    <li>
-                                        <button class="btn btn-primary loggedOut" ng-click="openSignUpModal()" type="button" href="#">Sign Up</button>
-                                    </li>
-                                    <li>
-                                        <button class="btn btn-primary loggedIn hidden" type="button" href="#">{{user.name}}</button>
-                                    </li>
-                                    <li>
-                                        <button class="btn btn-primary loggedIn hidden" ng-click="openLogOutModal()" type="button" href="#">Log Out</button>
-                                    </li>
-                                </ul>
-                            </div>
+                                </div>
+                            </form>
+                        </div>
+                        <div class="col-sm-3 pull-right">
+                            <ul class="nav navbar-nav navbar-right">
+                                <li>
+                                    <a class="loggedOut" ng-click="openLogInModal()" href="">Log In</a>
+                                </li>
+                                <li>
+                                    <a class="loggedOut" ng-click="openSignUpModal()" href="">Sign Up</a>
+                                </li>
+                                <li>
+                                    <a class="loggedIn hidden" href="#/profile">{{user.name}}</a>
+                                </li>
+                                <li>
+                                    <a class="loggedIn hidden" ng-click="openLogOutModal()" href="">Log Out</a>
+                                </li>
+                            </ul>
                         </div>
                     </div>
                 </nav>
@@ -147,61 +147,20 @@
                     <div class="modal-content">
                         <div class="modal-header">
                             <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                            <h4 class="modal-title" id="myModalLabel">Log In</h4>
+                            <h4 class="modal-title" id="myModalLabel">Log Out</h4>
                         </div>
                         <div class="modal-body">
-                            <div id="add-edit-dialog">
-                                <form id="add-edit-form">
-                                    <div>
-                                        <label for="dateCreated">Email:</label>
-                                        <input name="dateCreated" type="text">
-                                    </div>
-                                    <div>
-                                        <label for="description">Password:</label>
-                                        <input name="description" type="text">
-                                    </div>
-                                </form>
-                            </div>
+                            <h5>Are you sure you want to log out?</h5>
                         </div>
                         <div class="modal-footer">
                             <button id="close" type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
-                            <button id="confirmDel" type="button" class="btn btn-primary" ng-click="userLogIn()">Log In</button>
+                            <button id="confirmDel" type="button" class="btn btn-primary" ng-click="userLogOut()">Log Out</button>
                         </div>
                     </div>
                 </div>
             </div>
-        </header>
-        <div class="container">
-            <main>
-                <div id="north-panel"class="row"></div>
-                <div class="row">
-                    <div class="col-md-2 east-panel">
-                        <div class="panel panel-default">
-                            <div class="panel-heading">
-                                <h2 class="panel-title text-center">Categories</h2>
-                            </div>
-                            <ul class="list-group page-links">
-                                <li ng-repeat="category in categories" ng-click="showResultsPage($index, category)"
-                                     class="list-group-item btn" typeof="button">{{category}}</li>
-                            </ul>
-                        </div>
-                    </div>
-                    <div class="col-md-8" id="center-panel"></div>
-                    <div class="col-md-2 west-panel">
-                        <div class="panel panel-default">
-                            <div class="panel-heading">
-                                <h3 class="panel-title text-center">Charities</h3>
-                            </div>
-                            <ul class="list-group page-links">
-                                <li ng-repeat="charity in charities" ng-click="showResultsPage($index, charity)" class="list-group-item btn" typeof="button">{{charity}}</li>
-                            </ul>
-                        </div>
-                    </div>
-                </div>
-                
-            </main>
-
         </div>
+        <div ng-view></div>
     </div>
 </body>
 </html>

@@ -43,7 +43,7 @@ app.controller("EazyDonateController", function ($scope, $http) {
         $panel.empty();
         $panel.load('result-page.html');
     };
-
+    
     $scope.openCharityPage = function ($index, name) {
         var $panel = $('#center-panel');
         $panel.empty();
@@ -51,3 +51,27 @@ app.controller("EazyDonateController", function ($scope, $http) {
     };
 
 });
+
+/*
+app.directive('pageList', function ($compile) {
+    return {
+        restrict: 'EA',
+        transclude: false,
+        templateUrl: 'charity-page.html',
+        scope: {
+            charities: "="
+        },
+        link: function (scope, element, attrs) {
+        }
+    }
+});
+
+
+app.controller("pageController", function ($scope, $http) {
+    $scope.charities = ["Read Cross", "UNICEF", "WHO", "Gates Foundation", "Blue Shield"];
+    $scope.openCharityPage = function ($index, name) {
+        var $panel = $('#center-panel');
+        $panel.empty();
+        $panel.load('charity-page.html');
+    };
+});*/

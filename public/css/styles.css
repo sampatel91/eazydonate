@@ -7,9 +7,9 @@
 
 body.modal-open {margin-right: 0px}
 
+
 .navbar-top {
     margin-top: 60px;
-    padding-right: 17px;
 }
 
 .longDesc {
@@ -33,21 +33,27 @@ table button.edit {
 }
 
 .input-group {
-    width: 75%;
+    width: 100%;
 }
 
-.page-links li:hover {
+.page-links a:hover {
     color: #fff;
     background-color: #337ab7;
     border-color: #2e6da4;
 }
 
-.navbar-right li {
-    padding: 8px;
-}
-
 .navbar-form .input-group {
     margin-left: 50px;
+}
+
+.donation-panel input {
+    width: 65%;
+    float: left;
+}
+
+.donation-panel button {
+    margin-left: 5px;
+    float: left;
 }
 
 #add-edit-form {
@@ -64,9 +70,17 @@ table button.edit {
 	width: 300px;
 }
 
-@media screen and (max-width: 768px) {
-	.container {
-		width: 600px;
-	}
+.profile-left-info {
+    float: left;
+    padding: 5px;
+}
 
+.profile-right-info {
+    float: left;
+    padding: 5px;
+}
+
+.profile-info-row {
+    float: left;
+    width: 100%;
 }
