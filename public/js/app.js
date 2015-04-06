@@ -69,7 +69,7 @@ app.controller("NavbarCtrl", function ($scope, $http) {
 app.controller("HomeCtrl", function ($scope, $http) {
 
     $scope.categories = ["Education", "Shelter", "Food", "Health", "Cancer"];
-    $scope.charities = ["Read Cross", "UNICEF", "WHO", "Gates Foundation", "Blue Shield"];
+    $scope.charities = ["Red Cross", "UNICEF", "WHO", "Gates Foundation", "Blue Shield"];
 
     /*
     $scope.showResultsPage = function ($index, name) {
