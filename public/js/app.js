@@ -68,15 +68,25 @@ app.controller("NavbarCtrl", function ($scope, $http) {
 
 app.controller("HomeCtrl", function ($scope, $http) {
 
-    $scope.categories = ["Education", "Shelter", "Food", "Health", "Cancer"];
-    $scope.charities = ["Red Cross", "UNICEF", "WHO", "Gates Foundation", "Blue Shield"];
+    //$scope.categories = ["Education", "Shelter", "Food", "Health", "Cancer"];
+    //$scope.charities = ["Red Cross", "UNICEF", "WHO", "Gates Foundation", "Blue Shield"];
+    
+    $http.get("/api/charities")
+    .success(function (response) {
+        $scope.charities = response;
+    });
 
-    /*
+    $http.get("/api/categories")
+    .success(function (response) {
+        $scope.categories = response;
+    });
+
+    
     $scope.showResultsPage = function ($index, name) {
         var $panel = $('#center-panel');
         $panel.empty();
         $panel.load('result-page.html');
-    };*/
+    };
 
     $scope.openCharityPage = function ($index, name) {
         var $panel = $('#center-panel');
@@ -88,8 +98,8 @@ app.controller("HomeCtrl", function ($scope, $http) {
 
 app.controller("CharityCtrl", function ($scope, $http) {
 
-    $scope.categories = ["Education", "Shelter", "Food", "Health", "Cancer"];
-    $scope.results = ["Read Cross", "UNICEF", "WHO", "Gates Foundation", "Blue Shield"];
+    //$scope.categories = ["Education", "Shelter", "Food", "Health", "Cancer"];
+    //$scope.results = ["Read Cross", "UNICEF", "WHO", "Gates Foundation", "Blue Shield"];
 
     $scope.openDonationModal = function ($index, donation) {
         $('#donationModal').modal('show');
