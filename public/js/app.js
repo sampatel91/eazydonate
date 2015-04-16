@@ -63,18 +63,28 @@ app.factory("DonateService", function ($http) {
 app.controller("NavbarCtrl", function ($scope, $http, $location, $rootScope) {
     // opens modal with form to add a course
     $scope.openLogInModal = function () {
-        if ($scope.form) {
-            $scope.form.$setPristine();
-            $scope.form.$setUntouched();
+        $scope.user = {firstName: '', lastName: '', gender: '', email: ''};
+        if ($scope.logIn_form) {
+            $scope.logIn_form.$setPristine();
+            $scope.logIn_form.$setUntouched();
         }
         $('#logInModal').modal('show');
     };
 
     $scope.openSignUpModal = function () {
+        $scope.user = { firstName: '', lastName: '', gender: '', email: '', password: '', pass2: ''};
+        if ($scope.form) {
+            $scope.form.$setPristine();
+            $scope.form.$setUntouched();
+        }
         $('#signUpModal').modal('show');
     };
 
     $scope.openLogOutModal = function () {
+        if ($scope.form) {
+            $scope.form.$setPristine();
+            $scope.form.$setUntouched();
+        }
         $('#logOutModal').modal('show');
     };
 
@@ -85,9 +95,10 @@ app.controller("NavbarCtrl", function ($scope, $http, $location, $rootScope) {
 
     $scope.userLogIn = function (user) {
         console.log("log in");
+        /*
         if ($scope.form.$invalid) {
             return;
-        }
+        }*/
 
         $http.post('/login', user)
         .success(function (response) {
@@ -107,17 +118,23 @@ app.controller("NavbarCtrl", function ($scope, $http, $location, $rootScope) {
     };
 
     $scope.userSignUp = function (user) {
-        console.log(user.dob);
+
+        if ($scope.form.$invalid) {
+            return;
+        }
+        /*console.log(user.dob);
         if (!user.dob) {
             var date = new Date();
             user.dob = date;
-        }
+        }*/
         //user.dob = $scope.formatDate(user.dob);
         //console.log(user.dob);
         if (user.password == user.pass2) {
             $http.post('/register', user)
            .success(function (response) {
                $rootScope.currentuser = response;
+               $scope.currentuser = response;
+               console.log("Response:");
                console.log(response);
                console.log(user);
 

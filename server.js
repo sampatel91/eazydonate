@@ -15,7 +15,8 @@ app.use(passport.initialize());
 app.use(passport.session());
 
 var UserSchema = new mongoose.Schema({
-    name: String,
+    firstName: String,
+    lastName: String,
     gender: String,
     //dob: Date,
     email: String,

@@ -57,8 +57,13 @@ table button.edit {
 }
 
 #add-edit-form {
-	width: 435px;
+	width: 475px;
 	margin: 0px auto;
+}
+
+.form-error {
+    float: left;
+    margin-top: 3px;
 }
 
 #add-edit-form div {
