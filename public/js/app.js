@@ -88,11 +88,6 @@ app.controller("NavbarCtrl", function ($scope, $http, $location, $rootScope) {
         if ($scope.form.$invalid) {
             return;
         }
-        /*
-        $http.get('/rest/user')
-        .success(function (response) {
-            console.log(response);
-        });*/
 
         $http.post('/login', user)
         .success(function (response) {
@@ -108,10 +103,6 @@ app.controller("NavbarCtrl", function ($scope, $http, $location, $rootScope) {
         if (!$scope.currentuser) {
             $scope.invalidLogIn = true;
         };
-
-        /*
-        $('.navbar-right').find('a.loggedOut').addClass('hidden');
-        $('.navbar-right').find('a.loggedIn').removeClass('hidden');*/
         
     };
 
@@ -126,15 +117,13 @@ app.controller("NavbarCtrl", function ($scope, $http, $location, $rootScope) {
         if (user.password == user.pass2) {
             $http.post('/register', user)
            .success(function (response) {
-               //$rootScope.user = response;
+               $rootScope.currentuser = response;
                console.log(response);
                console.log(user);
 
                $location.path("/profile");
            });
-            /*$('#signUpModal').modal('hide');
-            $('.navbar-right').find('a.loggedOut').addClass('hidden');
-            $('.navbar-right').find('a.loggedIn').removeClass('hidden');*/
+            $('#signUpModal').modal('hide');
             $location.url('/profile');
         }
     };
@@ -148,8 +137,6 @@ app.controller("NavbarCtrl", function ($scope, $http, $location, $rootScope) {
         });
 
         $('#logOutModal').modal('hide');
-        $('.navbar-right').find('a.loggedOut').removeClass('hidden');
-        $('.navbar-right').find('a.loggedIn').addClass('hidden');
         $location.url('/');
     };
 
