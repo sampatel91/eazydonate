@@ -49,17 +49,17 @@
                         </div>
                         <div class="col-sm-3 pull-right">
                             <ul class="nav navbar-nav navbar-right">
-                                <li>
-                                    <a class="loggedOut" ng-click="openLogInModal()" href="">Log In</a>
+                                <li ng-show="!currentuser">
+                                    <a ng-click="openLogInModal()" href="">Log In</a>
                                 </li>
-                                <li>
-                                    <a class="loggedOut" ng-click="openSignUpModal()" href="">Sign Up</a>
+                                <li ng-show="!currentuser">
+                                    <a ng-click="openSignUpModal()" href="">Sign Up</a>
                                 </li>
-                                <li>
-                                    <a class="loggedIn hidden" href="#/profile">{{user.name}}</a>
+                                <li ng-show="currentuser">
+                                    <a href="#/profile">{{currentuser.name}}</a>
                                 </li>
-                                <li>
-                                    <a class="loggedIn hidden" ng-click="openLogOutModal()" href="">Log Out</a>
+                                <li ng-show="currentuser">
+                                    <a ng-click="openLogOutModal()" href="">Log Out</a>
                                 </li>
                             </ul>
                         </div>
@@ -73,24 +73,32 @@
                             <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
                             <h4 class="modal-title" id="myModalLabel">Log In</h4>
                         </div>
-                        <div class="modal-body">
-                            <div id="add-edit-dialog">
-                                <form id="add-edit-form">
-                                    <div>
-                                        <label for="dateCreated">Email:</label>
-                                        <input name="dateCreated" type="text">
+                        <form name="form" id="add-edit-form" class="css-form" novalidate>
+                            <div class="modal-body">
+                                <div>
+                                    <label for="email">Email:</label>
+                                    <input name="email" type="email" ng-model="user.username" required>
+                                    <div class="form-error-msg" ng-show="form.$submitted || form.email.$touched">
+                                        <span ng-show="form.email.$error.required">Email Required.</span>
+                                        <span ng-show="form.email.$error.email">Invalid Email.</span>
                                     </div>
-                                    <div>
-                                        <label for="description">Password:</label>
-                                        <input name="description" type="text">
+                                </div>
+                                <div>
+                                    <label for="password">Password:</label>
+                                    <input name="password" type="password" ng-model="user.password" required>
+                                    <div class="form-error-msg" ng-show="form.$submitted || form.password.$touched">
+                                        <span ng-show="form.password.$error.required">Password required.</span>
                                     </div>
-                                </form>
+                                </div>
+                                <h4 ng-show="invalidLogIn && 
+                                    (form.password.$pristine || form.email.$pristine)">Incorrect Email or Password</h4>
+                                
                             </div>
-                        </div>
-                        <div class="modal-footer">
-                            <button id="close" type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
-                            <button id="confirmDel" type="button" class="btn btn-primary" ng-click="userLogIn()">Log In</button>
-                        </div>
+                            <div class="modal-footer">
+                                <button class="btn btn-default" data-dismiss="modal">Cancel</button>
+                                <input type="submit" class="btn btn-primary" ng-click="userLogIn(user)" value="Log In">
+                            </div>
+                        </form>
                     </div>
                 </div>
             </div>
@@ -106,38 +114,38 @@
                                 <form id="add-edit-form">
                                     <div>
                                         <label for="name">Full Name:</label>
-                                        <input name="name" type="text" ng-model="newCourse.name">
+                                        <input name="name" type="text" ng-model="user.name">
                                     </div>
                                     <div>
                                         <label for="category">Gender:</label>
-                                        <select name="category" ng-model="newCourse.category">
+                                        <select name="category" ng-model="user.gender">
                                             <option value="">Select One</option>
-                                            <option value="PROG">Male</option>
-                                            <option value="DB">Female</option>
+                                            <option value="Male">Male</option>
+                                            <option value="Female">Female</option>
                                         </select>
                                     </div>
                                     <div>
-                                        <label for="dateCreated">Age:</label>
-                                        <input name="dateCreated" type="date" ng-model="newCourse.dateCreated">
+                                        <label for="dateCreated">DOB:</label>
+                                        <input name="dateCreated" type="date">
                                     </div>
                                     <div>
-                                        <label for="description">Email:</label>
-                                        <input name="description" type="text" ng-model="newCourse.description">
+                                        <label for="email">Email:</label>
+                                        <input name="emal" type="text" ng-model="user.email">
                                     </div>
                                     <div>
-                                        <label for="description">Password:</label>
-                                        <input name="description" type="text" ng-model="newCourse.description">
+                                        <label for="pass1">Password:</label>
+                                        <input name="pass1" type="text" ng-model="user.password">
                                     </div>
                                     <div>
-                                        <label for="description">Confirm Password:</label>
-                                        <input name="description" type="text" ng-model="newCourse.description">
+                                        <label for="pass2">Confirm Password:</label>
+                                        <input name="pass2" type="text" ng-model="user.pass2">
                                     </div>
                                 </form>
                             </div>
                         </div>
                         <div class="modal-footer">
                             <button id="close" type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
-                            <button id="confirmDel" type="button" class="btn btn-primary" ng-click="userSignUp()">Submit</button>
+                            <button id="confirmDel" type="button" class="btn btn-primary" ng-click="userSignUp(user)">Submit</button>
                         </div>
                     </div>
                 </div>

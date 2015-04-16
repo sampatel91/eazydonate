@@ -3,14 +3,18 @@
 ]);
 
 app.config(['$routeProvider',
-  function ($routeProvider) {
+  function ($routeProvider, $httpProvider) {
       $routeProvider.
         when('/home', {
             templateUrl: 'pages/home.html',
             controller: 'HomeCtrl'
         }).
         when('/profile', {
-            templateUrl: 'pages/profile.html'
+            templateUrl: 'pages/profile.html',
+            controller: 'ProfileCtrl',
+            resolve: {
+                loggedin: checkLoggedin
+            }
         }).
         when('/results', {
             templateUrl: 'pages/result-page.html'
@@ -19,14 +23,50 @@ app.config(['$routeProvider',
             templateUrl: 'pages/charity-page.html',
             controller: 'CharityCtrl'
         }).
+        when('/logout', {
+            templateUrl: 'pages/logout.html',
+            controller: 'LogoutCtrl'
+        }).
         otherwise({
             redirectTo: '/home'
         });
+
   }]);
 
-app.controller("NavbarCtrl", function ($scope, $http) {
+var checkLoggedin = function ($q, $timeout, $http, $location, $rootScope) {
+    var deferred = $q.defer();
+
+    $http.get('/loggedin').success(function (user) {
+        $rootScope.errorMessage = null;
+        // User is Authenticated
+        if (user !== '0')
+            deferred.resolve();
+            // User is Not Authenticated
+        else {
+            $rootScope.errorMessage = 'You need to log in.';
+            deferred.reject();
+            $location.url('/');
+        }
+    });
+
+    return deferred.promise;
+};
+
+app.factory("DonateService", function ($http) {
+    var findCharityByTitle = function (title, callback) {
+        var url = "";
+        $http.jsonp(url)
+        .success(callback);
+    };
+});
+
+app.controller("NavbarCtrl", function ($scope, $http, $location, $rootScope) {
     // opens modal with form to add a course
     $scope.openLogInModal = function () {
+        if ($scope.form) {
+            $scope.form.$setPristine();
+            $scope.form.$setUntouched();
+        }
         $('#logInModal').modal('show');
     };
 
@@ -43,28 +83,119 @@ app.controller("NavbarCtrl", function ($scope, $http) {
         console.log(search.title)
     };
 
-    $scope.userLogIn = function () {
-        $scope.user = { name: "User X" };
-        $('#logInModal').modal('hide');
+    $scope.userLogIn = function (user) {
+        console.log("log in");
+        if ($scope.form.$invalid) {
+            return;
+        }
+        /*
+        $http.get('/rest/user')
+        .success(function (response) {
+            console.log(response);
+        });*/
+
+        $http.post('/login', user)
+        .success(function (response) {
+            console.log(response);
+            var user = response;
+            $rootScope.currentuser = user;
+            $scope.currentuser = user;
+            $location.path("/profile");
+            $('#logInModal').modal('hide');
+            $scope.invalidLogIn = false;
+        });
+
+        if (!$scope.currentuser) {
+            $scope.invalidLogIn = true;
+        };
+
+        /*
         $('.navbar-right').find('a.loggedOut').addClass('hidden');
-        $('.navbar-right').find('a.loggedIn').removeClass('hidden');
+        $('.navbar-right').find('a.loggedIn').removeClass('hidden');*/
+        
     };
 
-    $scope.userSignUp = function () {
-        $scope.user = { name: "User X" };
-        $('#signUpModal').modal('hide');
-        $('.navbar-right').find('a.loggedOut').addClass('hidden');
-        $('.navbar-right').find('a.loggedIn').removeClass('hidden');
+    $scope.userSignUp = function (user) {
+        console.log(user.dob);
+        if (!user.dob) {
+            var date = new Date();
+            user.dob = date;
+        }
+        //user.dob = $scope.formatDate(user.dob);
+        //console.log(user.dob);
+        if (user.password == user.pass2) {
+            $http.post('/register', user)
+           .success(function (response) {
+               //$rootScope.user = response;
+               console.log(response);
+               console.log(user);
+
+               $location.path("/profile");
+           });
+            /*$('#signUpModal').modal('hide');
+            $('.navbar-right').find('a.loggedOut').addClass('hidden');
+            $('.navbar-right').find('a.loggedIn').removeClass('hidden');*/
+            $location.url('/profile');
+        }
     };
+
 
     $scope.userLogOut = function () {
-        $scope.user = { name: "User X" };
+        $http.post('/logout')
+        .success(function () {
+            $location.url('/logout');
+            $scope.currentuser = null;
+        });
+
         $('#logOutModal').modal('hide');
         $('.navbar-right').find('a.loggedOut').removeClass('hidden');
         $('.navbar-right').find('a.loggedIn').addClass('hidden');
+        $location.url('/');
     };
 
+    /*
+    Utility Methods
+    */
+    // formats dateCreated value to be more human-readable
+    $scope.formatDate = function (date) {
+        console.log("in formatDate");
+        var date = new Date(date)
+        var month = dateFormat(date.getMonth() + 1);
+        var day = dateFormat(date.getDate());
+        return month + '/' + day + '/' + date.getFullYear();
+    };
+
+    // Pads single digit number with leading zeroes
+    function dateFormat(n) {
+        if (n >= 10)
+            return n;
+        else
+            return "0" + n;
+    }
+
 });
+
+app.controller("ProfileCtrl", function ($scope, $http, $rootScope) {
+    $scope.currentuser = $rootScope.currentuser;
+})
+
+app.controller("LogoutCtrl", function ($scope, $http, $rootScope) {
+    $scope.currentuser = null;
+
+    $http.get("/rest/user")
+    .success(function (users) {
+        $scope.users = users;
+    });
+
+    $scope.removeUser = function (id) {
+        console.log("remove");
+        $http.delete("/rest/user/"+ id)
+        .success(function (users) {
+            $scope.users = users;
+        });
+    }
+    
+})
 
 app.controller("HomeCtrl", function ($scope, $http) {
 

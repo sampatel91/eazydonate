@@ -1,24 +1,24 @@
 ﻿<div class="row">
     <div class="col-md-2 profile-pic">
         <h4>Profile Picture</h4>
-        <img src="../public/images/profile-pic.gif" class="img-responsive" alt="Cinque Terre">
+        <img src="../images/profile-pic.gif" class="img-responsive" alt="Cinque Terre">
     </div>
     <div class="col-md-8">
         <div class="profile-info-row">
             <h4 class="profile-left-info">Name:</h4>
-            <h4 class="profile-right-info">Saumil Patel</h4>
+            <h4 class="profile-right-info">{{currentuser.name}}</h4>
         </div>
         <div class="profile-info-row">
             <h4 class="profile-left-info">Gender:</h4>
-            <h4 class="profile-right-info">Male</h4>
+            <h4 class="profile-right-info">{{currentuser.gender}}</h4>
         </div>
         <div class="profile-info-row">
-            <h4 class="profile-left-info">Age:</h4>
-            <h4 class="profile-right-info">23</h4>
+            <h4 class="profile-left-info">DOB:</h4>
+            <h4 class="profile-right-info"></h4>
         </div>
         <div class="profile-info-row">
             <h4 class="profile-left-info">Email:</h4>
-            <h4 class="profile-right-info">patel.sau@husky.neu.edu</h4>
+            <h4 class="profile-right-info">{{currentuser.email}}</h4>
         </div>
         
     </div>
