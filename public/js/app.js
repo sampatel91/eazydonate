@@ -105,13 +105,12 @@ app.controller("NavbarCtrl", function ($scope, $http, $location, $rootScope) {
             console.log(response);
             var user = response;
             $rootScope.currentuser = user;
-            $scope.currentuser = user;
             $location.path("/profile");
             $('#logInModal').modal('hide');
             $scope.invalidLogIn = false;
         });
 
-        if (!$scope.currentuser) {
+        if (!$rootScope.currentuser) {
             $scope.invalidLogIn = true;
         };
         
@@ -133,7 +132,6 @@ app.controller("NavbarCtrl", function ($scope, $http, $location, $rootScope) {
             $http.post('/register', user)
            .success(function (response) {
                $rootScope.currentuser = response;
-               $scope.currentuser = response;
                console.log("Response:");
                console.log(response);
                console.log(user);
@@ -150,7 +148,7 @@ app.controller("NavbarCtrl", function ($scope, $http, $location, $rootScope) {
         $http.post('/logout')
         .success(function () {
             $location.url('/logout');
-            $scope.currentuser = null;
+            $rootScope.currentuser = null;
         });
 
         $('#logOutModal').modal('hide');
@@ -179,12 +177,19 @@ app.controller("NavbarCtrl", function ($scope, $http, $location, $rootScope) {
 
 });
 
-app.controller("ProfileCtrl", function ($scope, $http, $rootScope) {
-    $scope.currentuser = $rootScope.currentuser;
+app.controller("ProfileCtrl", function ($scope, $http, $rootScope, $location) {
+    $scope.deleteAccount = function (id) {
+        $http.delete('/rest/user/' + id)
+        .success(function (users) {
+            $rootScope.currentuser = null;
+            $location.url('/home');
+        });
+    };
 })
 
+
+
 app.controller("LogoutCtrl", function ($scope, $http, $rootScope) {
-    $scope.currentuser = null;
 
     $http.get("/rest/user")
     .success(function (users) {

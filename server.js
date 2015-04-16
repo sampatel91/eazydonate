@@ -23,7 +23,23 @@ var UserSchema = new mongoose.Schema({
     password: String
 });
 
+/*
+var CharitySchema = new mongoose.Schema({
+    name: String,
+    description: String,
+    dateCreated: String,
+    email: String,
+    posts: [{
+        title: String,
+        description: String
+    }]
+});*/
+
 var UserModel = mongoose.model('UserModel', UserSchema);
+//var CharityModel = mongoose.model('CharityModel', CharitySchema);
+
+var admin = new UserModel({firstName: "Saumil", lastName: "Patel", gender: "Male", password: "561991", email: "spatel91@yahoo.com"});
+admin.save();
 //var user1 = new UserModel({ name: "spatel", password: "123", email: "Saumil" });
 //user1.save();
 
@@ -46,16 +62,7 @@ var UserSchema = new mongoose.Schema({
     email: String
 }, { collection: 'usersData' });
 
-var CharitySchema = new mongoose.Schema({
-    name: String,
-    description: String,
-    dateCreated: String,
-    email: String,
-    posts: [{
-        title: String,
-        description: String
-    }]
-}, { collection: 'CharityData' });
+
 
 
 var CharityModel = mongoose.model('CharityModel', CharitySchema);
@@ -64,28 +71,13 @@ var CharityModel = mongoose.model('CharityModel', CharitySchema);
 
 */
 
-/*var mongoose = require('mongoose');
-
-var connectionString = process.env.OPENSHIFT_MONGODB_DB_URL || 'mongodb://localhost/test';
-
-mongoose.connect(connectionString);
-//mongoose.connect('mongodb://localhost/test');
-
-var WebSiteSchema = new mongoose.Schema({
-    name: String,
-    Date: {type: Date, default: Date.now}
-}, {collection: 'website'});
-
-var WebSiteModel = mongoose.model('WebSite', WebSiteSchema);
-*/
-
 passport.use(new LocalStrategy(
 function (email, password, done) {
 
     UserModel.findOne({ email: email, password: password }, function (err, user) {
-        /*if (err) { return done(err); }
+        if (err) { return done(err); }
         if (!user) { return done(null, false); }
-        return done(null, user);*/
+        return done(null, user);
 
         if (user) {
             return done(null, user);

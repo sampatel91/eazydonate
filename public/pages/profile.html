@@ -1,4 +1,5 @@
 ﻿<div class="row">
+    <h3>Basic Information</h3>
     <div class="col-md-2 profile-pic">
         <h4>Profile Picture</h4>
         <img src="../images/profile-pic.gif" class="img-responsive" alt="Cinque Terre">
@@ -22,6 +23,9 @@
             <h4 class="profile-right-info">{{currentuser.email}}</h4>
         </div>
         
+    </div>
+    <div class="col-md-2">
+        <button class="btn btn-danger" ng-click="deleteAccount(currentuser._id)">Delete Account</button>
     </div>
 </div>
 <div class="row">
