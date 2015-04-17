@@ -56,7 +56,7 @@
                                     <a ng-click="openSignUpModal()" href="">Sign Up</a>
                                 </li>
                                 <li ng-show="currentuser">
-                                    <a href="#/profile">{{currentuser.firstName}}</a>
+                                    <a href="#/profile" ng-click="openProfile(currentuser._id)">{{currentuser.firstName}}</a>
                                 </li>
                                 <li ng-show="currentuser">
                                     <a ng-click="openLogOutModal()" href="">Log Out</a>

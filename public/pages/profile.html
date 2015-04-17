@@ -7,11 +7,11 @@
     <div class="col-md-8">
         <div class="profile-info-row">
             <h4 class="profile-left-info">Name:</h4>
-            <h4 class="profile-right-info">{{currentuser.firstName}} {{currentuser.lastName}}</h4>
+            <h4 class="profile-right-info">{{user.firstName}} {{user.lastName}}</h4>
         </div>
         <div class="profile-info-row">
             <h4 class="profile-left-info">Gender:</h4>
-            <h4 class="profile-right-info">{{currentuser.gender}}</h4>
+            <h4 class="profile-right-info">{{user.gender}}</h4>
         </div>
         <!--
         <div class="profile-info-row">
@@ -20,15 +20,24 @@
         </div>-->
         <div class="profile-info-row">
             <h4 class="profile-left-info">Email:</h4>
-            <h4 class="profile-right-info">{{currentuser.email}}</h4>
+            <h4 class="profile-right-info">{{user.email}}</h4>
         </div>
         
     </div>
     <div class="col-md-2">
-        <button class="btn btn-danger" ng-click="deleteAccount(currentuser._id)">Delete Account</button>
+        <button ng-show="currentuser._id == user._id" class="btn btn-danger" 
+                ng-click="deleteAccount(currentuser._id)">Delete Account</button>
+        <button ng-show="currentuser._id !== user._id && !isFollowed" class="btn btn-primary"
+                ng-click="followUser(user._id)">
+            Follow
+        </button>
+        <button ng-show="currentuser._id !== user._id && isFollowed" class="btn btn-success"
+                ng-click="unfollowUser(user._id)">
+            Unfollow
+        </button>
     </div>
 </div>
-<div class="row">
+<div class="row" ng-show="currentuser._id == user._id">
     <h3>Payment Information</h3>
     <div class="col-md-8">
         <div class="profile-info-row">
@@ -45,9 +54,9 @@
         </div>
     </div>
 </div>
-<div class="row" ng-show="charities.length">
-    <h3>Favorite Charities</h3>
-    <div class="col-md-6">
+<div class="row">
+    <div class="col-md-6" ng-show="charities.length && currentuser._id == user._id">
+        <h3>Favorite Charities</h3>
         <table class="table table-striped">
             <thead>
                 <tr>
@@ -66,5 +75,27 @@
             </tbody>
         </table>
     </div>
-    
+    <div class="col-md-6" ng-show="people.length && currentuser._id == user._id">
+        <h3>Favorite People</h3>
+        <table class="table table-striped">
+            <thead>
+                <tr>
+                    <td>Full Name</td>
+                </tr>
+            </thead>
+            <tbody>
+                <tr ng-repeat="person in people">
+                    <td>
+                        <a href="#/profile" ng-click="openProfile(person._id)">
+                            {{person.firstName}} {{person.lastName}}
+                        </a>
+                    </td>
+                    <td>
+                        <button class="btn btn-danger pull-right" ng-click="deletePerson(person._id)">Delete</button>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+
 </div>

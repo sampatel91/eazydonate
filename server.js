@@ -22,6 +22,7 @@ var UserSchema = new mongoose.Schema({
     email: String,
     password: String,
     charities: [String],
+    people: [String]
 });
 
 
@@ -231,6 +232,17 @@ app.get('/api/user/lookup/:id', function (req, res) {
     CharityModel.findOne({ _id: id }, function (err, charity) {
         var members = charity.members;
         var ids = members.map(function (id) { return id });
+        UserModel.find({ _id: { $in: ids } }, function (err, users) {
+            res.json(users);
+        });
+    });
+});
+
+app.get('/api/people/lookup/:id', function (req, res) {
+    var id = req.params.id;
+    UserModel.findOne({ _id: id }, function (err, user) {
+        var people = user.people;
+        var ids = people.map(function (id) { return id });
         UserModel.find({ _id: { $in: ids } }, function (err, users) {
             res.json(users);
         });
