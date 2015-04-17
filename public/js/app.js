@@ -190,7 +190,7 @@ app.controller("ProfileCtrl", function ($scope, $http, $rootScope, $location, $r
 
     var id = $rootScope.userId;
     if (id && uid !== id) {
-        $http.get('/api/user/' + id)
+        $http.get('/rest/user/' + id)
         .success(function (user) {
             if (user) {
                 $scope.user = user;
@@ -222,13 +222,13 @@ app.controller("ProfileCtrl", function ($scope, $http, $rootScope, $location, $r
     }
     
 
-    $http.get('/api/charities/lookup/'+ uid)
+    $http.get('/rest/charities/lookup/'+ uid)
     .success(function (charities) {
         console.log(charities);
         $scope.charities = charities;
     });
 
-    $http.get('/api/people/lookup/' + uid)
+    $http.get('/rest/people/lookup/' + uid)
     .success(function (people) {
         console.log(people);
         $scope.people = people;
@@ -251,7 +251,7 @@ app.controller("ProfileCtrl", function ($scope, $http, $rootScope, $location, $r
         $http.put('/rest/user/' + uid, currentuser)
         .success(function (user) {
             $rootScope.currentuser = user;
-            $http.get('/api/charities/lookup/' + user._id)
+            $http.get('/rest/charities/lookup/' + user._id)
             .success(function (charities) {
                 console.log(charities);
                 $scope.charities = charities;
@@ -320,14 +320,14 @@ app.controller("HomeCtrl", function ($scope, $http, $rootScope, $location) {
     if ($rootScope.currentuser && $rootScope.currentuser.charities) {
         var currentuser = $rootScope.currentuser;
         var uid = currentuser._id;
-        $http.get('/api/charities/lookup/' + uid)
+        $http.get('/rest/charities/lookup/' + uid)
         .success(function (charities) {
             console.log(charities);
             $scope.favcharities = charities;
         });
     }
 
-    $http.get("/api/charities?limit=1&full=true")
+    $http.get("/rest/charities?limit=1&full=true")
     .success(function (response) {
         $scope.charities = response;
     });
@@ -335,7 +335,7 @@ app.controller("HomeCtrl", function ($scope, $http, $rootScope, $location) {
     
     
 
-    $http.get("/api/categories")
+    $http.get("/rest/categories")
     .success(function (response) {
         $scope.categories = response;
     });
@@ -380,13 +380,13 @@ app.controller("CharityCtrl", function ($rootScope, $scope, $http) {
     }
 
     var charityId = $rootScope.charityId;
-    $http.get('/api/charities/' + charityId)
+    $http.get('/rest/charities/' + charityId)
     .success(function (charity) {
         console.log(charity);
         $scope.charity = charity;
     });
 
-    $http.get('/api/user/lookup/' + charityId)
+    $http.get('/rest/user/lookup/' + charityId)
     .success(function (members) {
         console.log(members);
         $scope.members = members;

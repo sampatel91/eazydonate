@@ -139,14 +139,14 @@ var categories = ["Education", "Shelter", "Food", "Health", "Cancer"];
 // GET
 // /api/courses
 // Retrieves all courses
-app.get('/api/charities', function (req, res) {
+app.get('/rest/charities', function (req, res) {
     CharityModel.find(function (err, charities) {
         res.json(charities);
     });
     
 });
 
-app.get('/api/charities/lookup/:id', function (req, res) {
+app.get('/rest/charities/lookup/:id', function (req, res) {
     var id = req.params.id;
     UserModel.findOne({ _id: id }, function (err, user) {
         var charities = user.charities;
@@ -157,7 +157,7 @@ app.get('/api/charities/lookup/:id', function (req, res) {
     });
 });
 
-app.get('/api/charities/:id', function (req, res) {
+app.get('/rest/charities/:id', function (req, res) {
     var id = req.params.id;
     CharityModel.findOne({_id: id},function (err, charity) {
         res.json(charity);
@@ -165,7 +165,7 @@ app.get('/api/charities/:id', function (req, res) {
 
 });
 
-app.get('/api/categories', function (req, res) {
+app.get('/rest/categories', function (req, res) {
     res.json(categories);
 });
 
@@ -228,7 +228,7 @@ app.get("/rest/user", function (req, res) {
     });
 });
 
-app.get('/api/user/:id', function (req, res) {
+app.get('/rest/user/:id', function (req, res) {
     var id = req.params.id;
     UserModel.findOne({ _id: id }, function (err, user) {
         res.json(user);
@@ -236,7 +236,7 @@ app.get('/api/user/:id', function (req, res) {
 
 });
 
-app.get('/api/user/lookup/:id', function (req, res) {
+app.get('/rest/user/lookup/:id', function (req, res) {
     var id = req.params.id;
     CharityModel.findOne({ _id: id }, function (err, charity) {
         var members = charity.members;
@@ -247,7 +247,7 @@ app.get('/api/user/lookup/:id', function (req, res) {
     });
 });
 
-app.get('/api/people/lookup/:id', function (req, res) {
+app.get('/rest/people/lookup/:id', function (req, res) {
     var id = req.params.id;
     UserModel.findOne({ _id: id }, function (err, user) {
         var people = user.people;
