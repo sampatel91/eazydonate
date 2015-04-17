@@ -17,7 +17,8 @@ app.config(['$routeProvider',
             }
         }).
         when('/results', {
-            templateUrl: 'pages/result-page.html'
+            templateUrl: 'pages/result-page.html',
+            controller: 'ResultCtrl'
         }).
         when('/charity', {
             templateUrl: 'pages/charity-page.html',
@@ -351,6 +352,10 @@ app.controller("HomeCtrl", function ($scope, $http, $rootScope, $location) {
         $location.url('/charity');
     };
 
+    $scope.findCharities = function (category) {
+        $rootScope.category = category;
+    };
+
 });
 
 app.controller("CharityCtrl", function ($rootScope, $scope, $http) {
@@ -444,4 +449,21 @@ app.controller("CharityCtrl", function ($rootScope, $scope, $http) {
         $panel.load('charity-page.html');
     };*/
 
+});
+
+
+app.controller("ResultCtrl", function ($scope, $http, $rootScope, $location) {
+    var category = $rootScope.category;
+    console.log(category);
+
+    $http.get('/rest/category/' + category)
+    .success(function (charities) {
+        console.log(charities);
+        $scope.results = charities;
+    });
+
+    $scope.showCharityPage = function (id) {
+        $rootScope.charityId = id;
+        $location.url('/charity');
+    }
 });

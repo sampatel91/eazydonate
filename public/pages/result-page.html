@@ -1,19 +1,13 @@
 ﻿<div class="panel panel-default">
     <div class="panel-heading">
-        <h2 class="panel-title">Search/Category Text</h2>
+        <h2 class="panel-title">{{category}}</h2>
     </div>
     <div class="list-group page-links">
-        <!--
-        <a ng-repeat="result in results" ng-click="showCharityPage($index, result)"
-            class="list-group-item" href="#">{{result}}</a>-->
-
-        <a href="#/charity" class="list-group-item">Result Charity 1</a>
-        <a href="#/charity" class="list-group-item">Result Charity 2</a>
-        <a href="#/charity" class="list-group-item">Result Charity 3</a>
-        <a href="#/charity" class="list-group-item">Result Charity 4</a>
-        <a href="#/charity" class="list-group-item">Result Charity 5</a>
-        <a href="#/charity" class="list-group-item">Result Charity 6</a>
-        <a href="#/charity" class="list-group-item">Result Charity 7</a>
+        <a ng-repeat="result in results" ng-click="showCharityPage(result._id)"
+            class="list-group-item" href="#/charity">
+            <h3>{{result.name}}</h3>
+            <p>{{result.description}}</p>
+        </a>
     </div>
 </div>
     

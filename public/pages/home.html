@@ -6,7 +6,7 @@
             </div>
             <div class="list-group page-links">
                 <a ng-repeat="category in categories" href="#/results" 
-                   class="list-group-item">{{category}}</a>
+                   class="list-group-item" ng-click="findCharities(category)">{{category}}</a>
             </div>
         </div>
     </div>

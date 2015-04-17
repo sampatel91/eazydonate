@@ -39,6 +39,7 @@ var CharitySchema = new mongoose.Schema({
     members: [String]
 });
 
+
 var UserModel = mongoose.model('UserModel', UserSchema);
 var CharityModel = mongoose.model('CharityModel', CharitySchema);
 
@@ -168,6 +169,14 @@ app.get('/api/categories', function (req, res) {
     res.json(categories);
 });
 
+app.get('/rest/category/:id', function (req, res) {
+    var id = req.params.id;
+    CharityModel.find({ categories: id }, function (err, charities) {
+        res.json(charities);
+    });
+    
+});
+
 app.post("/login", passport.authenticate('local'), function (req, res) {
     //console.log(req.user);
     //res.json(req.user);
@@ -286,6 +295,8 @@ var auth = function (req, res, next) {
     else
         next();
 };
+
+
 /*
 app.put("/rest/user/:id", auth, function (req, res) {
     UserModel.findById(req.params.id, function (err, user) {
