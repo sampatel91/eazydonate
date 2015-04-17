@@ -1,16 +1,13 @@
 ﻿<div class="row">
     <div class="col-md-8 col-sm-10 col-lg-9 col-xs-10">
-        <h1>WHO</h1>
-        <p>
-            The World Health Organization (WHO; /huː/) is a specialized agency of the 
-            United Nations (UN) that is concerned with international public health. 
-            It was established on 7 April 1948, headquartered in Geneva, Switzerland. 
-            The WHO is a member of the United Nations Development Group. Its predecessor, 
-            the Health Organization, was an agency of the League of Nations. The 
-            constitution of the World Health Organization had been signed by 61 countries 
-            on 22 July 1946, with the first meeting of the World Health Assembly finishing 
-            on 24 July 1948.
+        <h1>{{charity.name}}</h1>
+        <p>{{charity.description}}
         </p>
+    </div>
+    <div ng-show="currentuser" 
+         class="col-md-2 col-sm-4 col-lg-3 col-xs-4">
+        <button ng-show="!isFollowed" class="btn btn-primary" ng-click="followCharity(charity._id)">Follow</button>
+        <button ng-show="isFollowed" class="btn btn-success" ng-click="unfollowCharity(charity._id)">Unfollow</button>
     </div>
 </div>
 <div class="row">
@@ -28,6 +25,15 @@
                     <button class="btn btn-primary" ng-click="openDonationModal($index, donation)" type="submit">Donate</button>
                 </div>
 
+            </div>
+        </div>
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                <h2 class="panel-title text-center">Members</h2>
+            </div>
+            <div class="list-group page-links">
+                <a href="#/profile" ng-repeat="member in members" ng-click="openProfile(member._id)"
+                   class="list-group-item">{{member.firstName}} {{member.lastName}}</a>
             </div>
         </div>
         <div class="modal fade" id="donationModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
@@ -74,125 +80,16 @@
         </div>
     </div>
     <div class="col-md-8 col-md-pull-4 col-lg-pull-3 col-sm-10 col-lg-9 col-xs-10">
-        <div class="panel panel-default">
+        <div class="panel panel-default" ng-repeat="post in charity.posts">
             <div class="panel-heading">
-                <h2 class="panel-title">Post 1</h2>
+                <h2 class="panel-title">{{post.title}}</h2>
             </div>
             <ul class="list-group">
                 <li class="list-group-item">
-                    Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.
-                </li>
-            </ul>
-        </div>
-        <div class="panel panel-default">
-            <div class="panel-heading">
-                <h2 class="panel-title">Post 2</h2>
-            </div>
-            <ul class="list-group">
-                <li class="list-group-item">
-                    Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.
-                </li>
-            </ul>
-        </div>
-        <div class="panel panel-default">
-            <div class="panel-heading">
-                <h2 class="panel-title">Post 3</h2>
-            </div>
-            <ul class="list-group">
-                <li class="list-group-item">
-                    Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.
-                </li>
-            </ul>
-        </div>
-        <div class="panel panel-default">
-            <div class="panel-heading">
-                <h2 class="panel-title">Post 4</h2>
-            </div>
-            <ul class="list-group">
-                <li class="list-group-item">
-                    Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.
+                    {{post.details}}
                 </li>
             </ul>
         </div>
     </div>
 </div>
-<!--
-<div class="row">
-    <div class="col-md-9 col-xs-8">
-        <div class="panel panel-default">
-            <div class="panel-heading">
-                <h2 class="panel-title">Charity X</h2>
-            </div>
-            <div class="list-group page-links">
-
-                <a href="#/charity" class="list-group-item">Post 1</a>
-                <a href="#/charity" class="list-group-item">Post 2</a>
-                <a href="#/charity" class="list-group-item">Post 3</a>
-                <a href="#/charity" class="list-group-item">Post 4</a>
-                <a href="#/charity" class="list-group-item">Post 5</a>
-                <a href="#/charity" class="list-group-item">Post 6</a>
-                <a href="#/charity" class="list-group-item">Post 7</a>
-            </div>
-        </div>
-    </div>
-    <div class="col-md-3 col-xs-4">
-        <div class="panel panel-default">
-            <div class="panel-heading">
-                <h2 class="panel-title">Donation</h2>
-            </div>
-            <div class="panel-body">
-                <div>
-                    <h5>Enter Donation Amount</h5>
-                </div>
-                <div class="donation-panel">
-                    <input ng-model="donation.amount" type="text" class="form-control" placeholder="Donation Amount" />
-                    <button class="btn btn-primary" ng-click="openDonationModal($index, donation)" type="submit">Donate</button>
-                </div>
-
-            </div>
-        </div>
-        <div class="modal fade" id="donationModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-            <div class="modal-dialog">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                        <h4 class="modal-title" id="myModalLabel">Payment Information</h4>
-                    </div>
-                    <div class="modal-body">
-                        <h4>Enter Payment Information</h4>
-                        <div id="add-edit-dialog">
-                            <form id="add-edit-form">
-                                <div>
-                                    <label for="dateCreated">Full Name:</label>
-                                    <input name="dateCreated" type="text">
-                                </div>
-                                <div>
-                                    <label for="description">Card Number:</label>
-                                    <input name="description" type="text">
-                                </div>
-                                <div>
-                                    <label for="description">Expiration:</label>
-                                    <input name="description" type="text">
-                                </div>
-                                <div>
-                                    <label for="description">CSV:</label>
-                                    <input name="description" type="text">
-                                </div>
-                                <div>
-                                    <label for="description">Zipcode:</label>
-                                    <input name="description" type="text">
-                                </div>
-                                <h6>The Donation Amount: $ {{donation.amount}}</h6>
-                            </form>
-                        </div>
-                    </div>
-                    <div class="modal-footer">
-                        <button id="close" type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
-                        <button id="confirmDel" type="button" class="btn btn-primary" ng-click="confirmPaymentInfo()">Confirm</button>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-</div>-->
 

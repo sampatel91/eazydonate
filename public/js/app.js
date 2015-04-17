@@ -58,6 +58,7 @@ app.factory("DonateService", function ($http) {
         $http.jsonp(url)
         .success(callback);
     };
+
 });
 
 app.controller("NavbarCtrl", function ($scope, $http, $location, $rootScope) {
@@ -105,9 +106,9 @@ app.controller("NavbarCtrl", function ($scope, $http, $location, $rootScope) {
             console.log(response);
             var user = response;
             $rootScope.currentuser = user;
-            $location.path("/profile");
             $('#logInModal').modal('hide');
             $scope.invalidLogIn = false;
+            $location.path("/profile");
         });
 
         if (!$rootScope.currentuser) {
@@ -135,7 +136,6 @@ app.controller("NavbarCtrl", function ($scope, $http, $location, $rootScope) {
                console.log("Response:");
                console.log(response);
                console.log(user);
-
                $location.path("/profile");
            });
             $('#signUpModal').modal('hide');
@@ -178,6 +178,23 @@ app.controller("NavbarCtrl", function ($scope, $http, $location, $rootScope) {
 });
 
 app.controller("ProfileCtrl", function ($scope, $http, $rootScope, $location) {
+    var currentuser = $rootScope.currentuser;
+    var uid = currentuser._id;
+
+    var id = $rootScope.userId;
+    $http.get('/api/user/' + id)
+    .success(function (user) {
+        $scope.user = user;
+    });
+    
+
+    $http.get('/api/charities/lookup/'+ uid)
+    .success(function (charities) {
+        console.log(charities);
+        $scope.charities = charities;
+    });
+
+
     $scope.deleteAccount = function (id) {
         $http.delete('/rest/user/' + id)
         .success(function (users) {
@@ -185,12 +202,34 @@ app.controller("ProfileCtrl", function ($scope, $http, $rootScope, $location) {
             $location.url('/home');
         });
     };
+
+    $scope.deleteFavorite = function (id) {
+        var currentuser = $rootScope.currentuser;
+        var index = currentuser.charities.indexOf(id);
+        var charityRemoved = currentuser.charities.splice(index, 1);
+        var uid = currentuser._id;
+        $http.put('/rest/user/' + uid, currentuser)
+        .success(function (user) {
+            $rootScope.currentuser = user;
+            $http.get('/api/charities/lookup/' + user._id)
+            .success(function (charities) {
+                console.log(charities);
+                $scope.charities = charities;
+            });
+        });
+    };
+
+    $scope.openCharityPage = function (charity) {
+        $rootScope.charityId = charity._id;
+        $location.url('/charity');
+    };
 })
 
 
 
 app.controller("LogoutCtrl", function ($scope, $http, $rootScope) {
 
+    /*
     $http.get("/rest/user")
     .success(function (users) {
         $scope.users = users;
@@ -202,19 +241,29 @@ app.controller("LogoutCtrl", function ($scope, $http, $rootScope) {
         .success(function (users) {
             $scope.users = users;
         });
-    }
+    }*/
     
 })
 
-app.controller("HomeCtrl", function ($scope, $http) {
+app.controller("HomeCtrl", function ($scope, $http, $rootScope, $location) {
 
-    //$scope.categories = ["Education", "Shelter", "Food", "Health", "Cancer"];
-    //$scope.charities = ["Red Cross", "UNICEF", "WHO", "Gates Foundation", "Blue Shield"];
-    
-    $http.get("/api/charities")
+    if ($rootScope.currentuser && $rootScope.currentuser.charities) {
+        var currentuser = $rootScope.currentuser;
+        var uid = currentuser._id;
+        $http.get('/api/charities/lookup/' + uid)
+        .success(function (charities) {
+            console.log(charities);
+            $scope.favcharities = charities;
+        });
+    }
+
+    $http.get("/api/charities?limit=1&full=true")
     .success(function (response) {
         $scope.charities = response;
     });
+
+    
+    
 
     $http.get("/api/categories")
     .success(function (response) {
@@ -228,18 +277,77 @@ app.controller("HomeCtrl", function ($scope, $http) {
         $panel.load('result-page.html');
     };
 
-    $scope.openCharityPage = function ($index, name) {
-        var $panel = $('#center-panel');
-        $panel.empty();
-        $panel.load('charity-page.html');
+    $scope.openCharityPage = function (charity) {
+        $rootScope.charityId = charity._id;
+        $location.url('/charity');
     };
 
 });
 
-app.controller("CharityCtrl", function ($scope, $http) {
+app.controller("CharityCtrl", function ($rootScope, $scope, $http) {
+    
+    var currentuser = $rootScope.currentuser;
+    if (currentuser && currentuser.charities) {
+        var charities = currentuser.charities;
+        var id = $rootScope.charityId;
+        $scope.isFollowed = false;
+        for (index = charities.length - 1; index >= 0; --index) {
+            if(charities[index] == id){
+                $scope.isFollowed = true;
+            }
+        }
+        /*
+        charities.forEach(function (charity) {
+            if (charity == id) {
+                $scope.isFollowed = true;
+            }
+        });*/
+        
+    }
 
-    //$scope.categories = ["Education", "Shelter", "Food", "Health", "Cancer"];
-    //$scope.results = ["Read Cross", "UNICEF", "WHO", "Gates Foundation", "Blue Shield"];
+    var charityId = $rootScope.charityId;
+    $http.get('/api/charities/' + charityId)
+    .success(function (charity) {
+        console.log(charity);
+        $scope.charity = charity;
+    });
+
+    $http.get('/api/user/lookup/' + charityId)
+    .success(function (members) {
+        console.log(members);
+        $scope.members = members;
+    });
+
+    $scope.followCharity = function (id) {
+        var currentuser = $rootScope.currentuser;
+        currentuser.charities.push(id);
+        var uid = currentuser._id;
+        var user = currentuser;
+        $http.put('/rest/user/' + uid, user)
+        .success(function (user) {
+            $rootScope.currentuser = user;
+            $scope.isFollowed = true;
+        });
+        var charity = $scope.charity;
+        charity.members.push(uid);
+        $http.put('/rest/charity/' + charityId, charity)
+        .success(function (charity) {
+            $scope.charity = charity;
+        });
+    };
+
+    $scope.unfollowCharity = function (id) {
+        var currentuser = $rootScope.currentuser;
+        var index = currentuser.charities.indexOf(id);
+        var charityRemoved = currentuser.charities.splice(index, 1);
+        var uid = currentuser._id;
+        var user = currentuser;
+        $http.put('/rest/user/' + uid, currentuser)
+        .success(function (user) {
+            $rootScope.currentuser = user;
+            $scope.isFollowed = false;
+        });
+    };
 
     $scope.openDonationModal = function ($index, donation) {
         $('#donationModal').modal('show');
@@ -248,6 +356,10 @@ app.controller("CharityCtrl", function ($scope, $http) {
 
     $scope.confirmPaymentInfo = function () {
         $('#donationModal').modal('hide');
+    };
+
+    $scope.openProfile = function (id) {
+        console.log(id);
     };
 
     /*

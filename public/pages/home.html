@@ -12,10 +12,13 @@
     <div class="col-md-3 col-sm-5 west-panel pull-right">
         <div class="panel panel-default">
             <div class="panel-heading">
-                <h3 class="panel-title text-center">Charities</h3>
+                <h3 ng-show="!currentuser ||(currentuser && !currentuser.charities.length)" class="panel-title text-center">Charity Pages</h3>
+                <h3 ng-show="currentuser && currentuser.charities.length" 
+                    class="panel-title text-center">Favorite Charities</h3>
             </div>
             <div class="list-group page-links">
-                <a ng-repeat="charity in charities" href="#/charity" class="list-group-item">{{charity.name}}</a>
+                <a href="#/charity" ng-repeat="charity in (favcharities.length ? favcharities : charities)" 
+                   class="list-group-item" ng-click="openCharityPage(charity)">{{charity.name}}</a>
             </div>
         </div>
     </div>
@@ -26,7 +29,7 @@
                     <div class="panel panel-default">
                         <div class="panel-heading">
                             <h3 class="panel-title">
-                                <a href="#/charity">{{charity.name}}</a>
+                                <a href="#/charity" ng-click="openCharityPage(charity)">{{charity.name}}</a>
                             </h3>
                         </div>
                         <div class="panel-body">

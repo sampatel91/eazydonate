@@ -20,10 +20,11 @@ var UserSchema = new mongoose.Schema({
     gender: String,
     //dob: Date,
     email: String,
-    password: String
+    password: String,
+    charities: [String],
 });
 
-/*
+
 var CharitySchema = new mongoose.Schema({
     name: String,
     description: String,
@@ -31,17 +32,67 @@ var CharitySchema = new mongoose.Schema({
     email: String,
     posts: [{
         title: String,
-        description: String
-    }]
-});*/
+        details: String
+    }],
+    categories: [String],
+    members: [String]
+});
 
 var UserModel = mongoose.model('UserModel', UserSchema);
-//var CharityModel = mongoose.model('CharityModel', CharitySchema);
+var CharityModel = mongoose.model('CharityModel', CharitySchema);
 
 var admin = new UserModel({firstName: "Saumil", lastName: "Patel", gender: "Male", password: "561991", email: "spatel91@yahoo.com"});
 admin.save();
-//var user1 = new UserModel({ name: "spatel", password: "123", email: "Saumil" });
-//user1.save();
+var char1 = new CharityModel({
+    name: "Red Cross",
+    description: "The World Health Organization WHO is a specialized agency of the United Nations (UN) that is concerned with international public health. It was established on 7 April 1948, headquartered in Geneva, Switzerland. The WHO is a member of the United Nations Development Group. Its predecessor, the Health Organization, was an agency of the League of Nations. The constitution of the World Health Organization had been signed by 61 countries on 22 July 1946, with the first meeting of the World Health Assembly finishing on 24 July 1948.",
+    posts: [{
+        title: "Post 1",
+        details: "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum."
+    }, {
+        title: "Post 2",
+        details: "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum."
+    }, {
+        title: "Post 3",
+        details: "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum."
+    }, {
+        title: "Post 4",
+        details: "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum."
+    }],
+    categories: ['Education', 'Food']
+});
+var char2 = new CharityModel({
+    name: "UNICEF",
+    description: "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum."
+});
+var char3 = new CharityModel({
+    name: "WHO",
+    description: "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum."
+});
+var char4 = new CharityModel({
+    name: "BMC",
+    description: "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum."
+});
+var char5 = new CharityModel({
+    name: "Gates Foundation",
+    description: "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum."
+});
+var char6 = new CharityModel({
+    name: "Kill Hunger",
+    description: "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum."
+});
+var char7 = new CharityModel({
+    name: "Red Cross",
+    description: "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum."
+});
+char1.save();
+char2.save();
+char3.save();
+char4.save();
+char5.save();
+char6.save();
+char7.save();
+
 
 
 var bodyParser = require('body-parser');
@@ -50,26 +101,6 @@ var multer = require('multer');
 app.use(bodyParser.json()); // for parsing application/json
 app.use(bodyParser.urlencoded({ extended: true })); // for parsing application/x-www-form-urlencoded
 app.use(multer()); // for parsing multipart/form-data
-
-/*
-
-
-var UserSchema = new mongoose.Schema({
-    username: String,
-    password: String,
-    firstName: String,
-    lastName: String,
-    email: String
-}, { collection: 'usersData' });
-
-
-
-
-var CharityModel = mongoose.model('CharityModel', CharitySchema);
-
-
-
-*/
 
 passport.use(new LocalStrategy(
 function (email, password, done) {
@@ -101,21 +132,35 @@ passport.deserializeUser(function (user, done) {
 var categories = ["Education", "Shelter", "Food", "Health", "Cancer"];
 //var charities = ["Red Cross", "UNICEF", "WHO", "Gates Foundation", "Blue Shield"];
 
-var charities = [
-    { name: "Red Cross", description: "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum." },
-    { name: "UNICEF", description: "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum." },
-    { name: "WHO", description: "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum." },
-    { name: "BMC", description: "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum." },
-    { name: "Gates Foundation", description: "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum." },
-    { name: "Kill Hunger", description: "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum." },
-    { name: "Red Cross", description: "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum." },
-];
+
 
 // GET
 // /api/courses
 // Retrieves all courses
 app.get('/api/charities', function (req, res) {
-    res.json(charities);
+    CharityModel.find(function (err, charities) {
+        res.json(charities);
+    });
+    
+});
+
+app.get('/api/charities/lookup/:id', function (req, res) {
+    var id = req.params.id;
+    UserModel.findOne({ _id: id }, function (err, user) {
+        var charities = user.charities;
+        var ids = charities.map(function (id) { return id });
+        CharityModel.find({ _id: { $in: ids } }, function (err, charities) {
+            res.json(charities);
+        });
+    });
+});
+
+app.get('/api/charities/:id', function (req, res) {
+    var id = req.params.id;
+    CharityModel.findOne({_id: id},function (err, charity) {
+        res.json(charity);
+    });
+
 });
 
 app.get('/api/categories', function (req, res) {
@@ -173,11 +218,52 @@ app.get("/rest/user", function (req, res) {
     });
 });
 
+app.get('/api/user/:id', function (req, res) {
+    var id = req.params.id;
+    UserModel.findOne({ _id: id }, function (err, user) {
+        res.json(user);
+    });
+
+});
+
+app.get('/api/user/lookup/:id', function (req, res) {
+    var id = req.params.id;
+    CharityModel.findOne({ _id: id }, function (err, charity) {
+        var members = charity.members;
+        var ids = members.map(function (id) { return id });
+        UserModel.find({ _id: { $in: ids } }, function (err, users) {
+            res.json(users);
+        });
+    });
+});
+
 app.delete("/rest/user/:id", function (req, res) {
     var id = req.params.id;
     UserModel.remove({_id: id}, function (err, count) {
         UserModel.find(function (err, users) {
             res.json(users);
+        });
+    });
+});
+
+app.put("/rest/user/:id", function (req, res) {
+    var id = req.params.id;
+    UserModel.findById(id, function (err, user) {
+        user.update(req.body, function (err, count) {
+            UserModel.findById(id, function (err, user) {
+                res.json(user);
+            });
+        });
+    });
+});
+
+app.put("/rest/charity/:id", function (req, res) {
+    var id = req.params.id;
+    CharityModel.findById(id, function (err, charity) {
+        charity.update(req.body, function (err, count) {
+            CharityModel.findById(id, function (err, charity) {
+                res.json(charity);
+            });
         });
     });
 });

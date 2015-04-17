@@ -45,3 +45,26 @@
         </div>
     </div>
 </div>
+<div class="row" ng-show="charities.length">
+    <h3>Favorite Charities</h3>
+    <div class="col-md-6">
+        <table class="table table-striped">
+            <thead>
+                <tr>
+                    <td>Charity Name</td>
+                </tr>
+            </thead>
+            <tbody>
+                <tr ng-repeat="charity in charities">
+                    <td>
+                        <a href="" ng-click="openCharityPage(charity)">{{charity.name}}</a>
+                    </td>
+                    <td>
+                        <button class="btn btn-danger pull-right" ng-click="deleteFavorite(charity._id)">Delete</button>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+    
+</div>
