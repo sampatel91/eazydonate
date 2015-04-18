@@ -97,8 +97,10 @@ app.controller("NavbarCtrl", function ($scope, $http, $location, $rootScope, $ro
     };
 
     $scope.showSearchResults = function (search) {
-        $scope.search = search;
-        console.log(search.title)
+        $rootScope.search = search;
+        $('#srch-term').val('');
+        console.log(search.title);
+        $route.reload();
     };
 
     $scope.userLogIn = function (user) {
@@ -340,13 +342,6 @@ app.controller("HomeCtrl", function ($scope, $http, $rootScope, $location) {
         $scope.categories = response;
     });
 
-    
-    $scope.showResultsPage = function ($index, name) {
-        var $panel = $('#center-panel');
-        $panel.empty();
-        $panel.load('result-page.html');
-    };
-
     $scope.openCharityPage = function (charity) {
         $rootScope.charityId = charity._id;
         $location.url('/charity');
@@ -454,16 +449,25 @@ app.controller("CharityCtrl", function ($rootScope, $scope, $http) {
 
 app.controller("ResultCtrl", function ($scope, $http, $rootScope, $location) {
     var category = $rootScope.category;
+    var search = $rootScope.search;
     console.log(category);
 
-    $http.get('/rest/category/' + category)
-    .success(function (charities) {
-        console.log(charities);
-        $scope.results = charities;
-    });
+    if (search) {
+        $http.get('/rest/search/' + search)
+        .success(function (results) {
+            $scope.results = results;
+        });
+    } else {
+        $http.get('/rest/category/' + category)
+        .success(function (charities) {
+            console.log(charities);
+            $scope.results = charities;
+        });
+    }
 
     $scope.showCharityPage = function (id) {
         $rootScope.charityId = id;
         $location.url('/charity');
-    }
+    };
+
 });

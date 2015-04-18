@@ -1,8 +1,9 @@
 ﻿var cookieParser = require('cookie-parser');
 var session = require('express-session');
 var mongoose = require('mongoose');
-var connectionString = process.env.OPENSHIFT_MONGODB_DB_URL || 'mongodb://localhost/test';
-var db = mongoose.connect(connectionString);
+var connectionString = process.env.OPENSHIFT_MONGODB_DB_URL || 'mongodb://localhost/admin';
+var db = mongojs(connectionString, ["Users", "Charities"]);
+mongoose.connect(connectionString);
 var express = require('express');
 var app = express();
 app.use(express.static(__dirname + '/public'));
@@ -40,8 +41,8 @@ var CharitySchema = new mongoose.Schema({
 });
 
 
-var UserModel = mongoose.model('UserModel', UserSchema);
-var CharityModel = mongoose.model('CharityModel', CharitySchema);
+var UserModel = mongoose.model('Users', UserSchema);
+var CharityModel = mongoose.model('Charities', CharitySchema);
 
 var admin = new UserModel({firstName: "Saumil", lastName: "Patel", gender: "Male", password: "561991", email: "spatel91@yahoo.com"});
 admin.save();
@@ -174,6 +175,16 @@ app.get('/rest/category/:id', function (req, res) {
     CharityModel.find({ categories: id }, function (err, charities) {
         res.json(charities);
     });
+    
+});
+
+app.get('/rest/search/:id', function (req, res) {
+    var id = req.params.id;
+    CharityModel.find({ name: { $regex: id } },
+        { categories: { $regex: id } }, function (err, charities) {
+        console.log(charities);
+        res.json(charities);
+    })
     
 });
 
@@ -335,6 +346,13 @@ MongoDB 2.4 database added.  Please make note of these credentials:
    Database Name: eazydonate
 
 Connection URL: mongodb://$OPENSHIFT_MONGODB_DB_HOST:$OPENSHIFT_MONGODB_DB_PORT/
+
+
+
+Please make note of these MongoDB credentials:
+  RockMongo User: admin
+  RockMongo Password: Y2JxXVCM6Djv
+URL: https://eazydonate-spatel91.rhcloud.com/rockmongo/
 
 */
 

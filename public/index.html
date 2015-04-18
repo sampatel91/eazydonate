@@ -38,10 +38,11 @@
                         <div class="col-sm-5">
                             <form class="navbar-form" role="search">
                                 <div class="input-group">
-                                    <input type="text" ng-model="search.title" class="form-control" placeholder="Search" name="srch-term" id="srch-term">
+                                    <input type="text" ng-model="search.term" class="form-control" placeholder="Search" 
+                                           name="srch-term" id="srch-term">
                                     <div class="input-group-btn">
                                         <a class="btn btn-default" href="#/results" typeof="button">
-                                            <i ng-click="showSearchResults(search)" class="glyphicon glyphicon-search"></i>
+                                            <i ng-click="showSearchResults(search.term)" class="glyphicon glyphicon-search"></i>
                                         </a>
                                     </div>
                                 </div>
