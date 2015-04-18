@@ -1,9 +1,8 @@
 ﻿var cookieParser = require('cookie-parser');
 var session = require('express-session');
 var mongoose = require('mongoose');
-var connectionString = process.env.OPENSHIFT_MONGODB_DB_URL || 'mongodb://localhost/admin';
-var db = mongojs(connectionString, ["Users", "Charities"]);
-mongoose.connect(connectionString);
+var connectionString = process.env.OPENSHIFT_MONGODB_DB_URL || 'mongodb://localhost/test';
+var db = mongoose.connect(connectionString);
 var express = require('express');
 var app = express();
 app.use(express.static(__dirname + '/public'));
@@ -41,8 +40,8 @@ var CharitySchema = new mongoose.Schema({
 });
 
 
-var UserModel = mongoose.model('Users', UserSchema);
-var CharityModel = mongoose.model('Charities', CharitySchema);
+var UserModel = mongoose.model('UserModel', UserSchema);
+var CharityModel = mongoose.model('CharityModel', CharitySchema);
 
 var admin = new UserModel({firstName: "Saumil", lastName: "Patel", gender: "Male", password: "561991", email: "spatel91@yahoo.com"});
 admin.save();
