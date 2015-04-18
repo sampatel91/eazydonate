@@ -281,9 +281,9 @@ app.put("/rest/user/:id", function (req, res) {
     var id = req.params.id;
     UserModel.findById(id, function (err, user) {
         user.update(req.body, function (err, count) {
-            UserModel.findById(id, function (err, user) {
+            //UserModel.findById(id, function (err, user) {
                 res.json(user);
-            });
+            //});
         });
     });
 });
@@ -292,9 +292,9 @@ app.put("/rest/charity/:id", function (req, res) {
     var id = req.params.id;
     CharityModel.findById(id, function (err, charity) {
         charity.update(req.body, function (err, count) {
-            CharityModel.findById(id, function (err, charity) {
+            //CharityModel.findById(id, function (err, charity) {
                 res.json(charity);
-            });
+            //});
         });
     });
 });
