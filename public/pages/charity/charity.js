@@ -73,8 +73,10 @@
     };
 
     //send payment info to backend
-    $scope.confirmPaymentInfo = function () {
+    $scope.confirmPaymentInfo = function (charityName, amount) {
         $('#donationModal').modal('hide');
+        $rootScope.charityName = charityName;
+        $rootScope.amount = amount;
     };
 
     //sets userId to clicked charity memember to

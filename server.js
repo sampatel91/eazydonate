@@ -2,7 +2,8 @@
 var session = require('express-session');
 var mongoose = require('mongoose');
 var mongojs = require('mongojs');
-var connectionString = process.env.OPENSHIFT_MONGODB_DB_URL || 'mongodb://localhost/test';
+var connectionString = 'mongodb://openshift_1543hle1_44gdsl8c:561991@ds061731.mongolab.com:61731/openshift_1543hle1_44gdsl8c';
+//var connectionString = process.env.OPENSHIFT_MONGODB_DB_URL || 'mongodb://localhost/test';
 var ObjectId = mongojs.ObjectId;
 var db = mongojs(connectionString, ["users", "charities"]);
 mongoose.connect(connectionString);
@@ -229,7 +230,7 @@ app.get('/rest/category/:id', function (req, res) {
 //return result for the search term
 app.get('/rest/search/:name', function (req, res) {
     var name = req.params.name;
-    CharityModel.find({ name: { $regex: name, $options: 'i' } },
+    CharityModel.find({ $text: { $search: name }},
     /*
     CharityModel.find({
         $or: [{ name: { $regex: name, $options: 'i' } },

@@ -27,6 +27,13 @@ app.config(['$routeProvider',
         when('/logout', {
             templateUrl: 'pages/logout/logout.html'
         }).
+        when('/donation', {
+            templateUrl: 'pages/donation/donation.html'
+        }).
+        when('/search', {
+            templateUrl: 'pages/search/search.html',
+            controller: 'SearchCtrl'
+        }).
         otherwise({
             redirectTo: '/home'
         });
@@ -53,6 +60,10 @@ var checkLoggedin = function ($q, $timeout, $http, $location, $rootScope) {
 };
 
 app.controller("NavbarCtrl", function ($scope, $http, $location, $rootScope, $route) {
+
+    $('.nav a').on('click', function () {
+        $(".navbar-toggle").click();
+    });
 
     $scope.openProfile = function (id) {
         $rootScope.userId = null;
@@ -86,13 +97,6 @@ app.controller("NavbarCtrl", function ($scope, $http, $location, $rootScope, $ro
             $scope.form.$setUntouched();
         }
         $('#logOutModal').modal('show');
-    };
-
-    //shows results based on user input
-    $scope.showSearchResults = function (search) {
-        $rootScope.search = search;
-        $('#srch-term').val('');
-        $route.reload();
     };
 
     //lets user log in if account already exists

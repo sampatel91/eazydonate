@@ -1,0 +1,31 @@
+﻿<div class="row">
+    <div class="col-md-10 col-lg-10 col-xs-10">
+        <form class="navbar-form" role="search">
+            <div class="input-group">
+                <input type="text" ng-model="search.term" class="form-control" placeholder="Search"
+                       name="srch-term" id="srch-term">
+                <div class="input-group-btn">
+                    <a class="btn btn-default" href="#/search" typeof="button">
+                        <i ng-click="showSearchResults(search.term)" class="glyphicon glyphicon-search"></i>
+                    </a>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+<div class="row" ng-show="results.length">
+    <div class="panel panel-default">
+        <div class="panel-heading">
+            <h2 ng-show="category" class="panel-title">{{category}}</h2>
+            <h2 ng-hide="category" class="panel-title">Search Results for: {{search}}</h2>
+        </div>
+        <div class="list-group page-links">
+            <a ng-repeat="result in results" ng-click="showCharityPage(result._id)"
+               class="list-group-item" href="#/charity">
+                <h3>{{result.name}}</h3>
+                <p>{{result.description}}</p>
+            </a>
+        </div>
+        <h5 ng-show="!results.length">  Try Searching with a different term or single word.</h5>
+    </div>
+</div>

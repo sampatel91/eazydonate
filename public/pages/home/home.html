@@ -5,12 +5,12 @@
                 <h2 class="panel-title text-center">Categories</h2>
             </div>
             <div class="list-group page-links">
-                <a ng-repeat="category in categories" href="#/results" 
+                <a ng-repeat="category in categories" href="#/search" 
                    class="list-group-item" ng-click="findCharities(category)">{{category}}</a>
             </div>
         </div>
     </div>
-    <div class="col-md-3 col-sm-5 west-panel pull-right">
+    <div class="col-md-3 col-sm-5 col-xs-12 pull-right">
         <div class="panel panel-default">
             <div class="panel-heading">
                 <h3 ng-show="!currentuser ||(currentuser && !currentuser.charities.length)" class="panel-title text-center">Charity Pages</h3>
@@ -23,7 +23,7 @@
             </div>
         </div>
     </div>
-    <div class="col-md-7 col-sm-12" id="center-panel">
+    <div class="col-md-7 col-sm-12 hidden-xs" id="center-panel">
         <div>
             <ul class="list-group">
                 <li ng-repeat="charity in charities">

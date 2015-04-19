@@ -22,6 +22,7 @@
     <script src="pages/charity/charity.js"></script>
     <script src="pages/profile/profile.js"></script>
     <script src="pages/results/results.js"></script>
+    <script src="pages/search/search.js"></script>
 </head>
 
 <body ng-app="EazyDonate">
@@ -39,21 +40,11 @@
                         <a class="navbar-brand" href="#/home">EazyDonate</a>
                     </div>
                     <div id="navbar" class="collapse navbar-collapse">
-                        <div class="col-sm-5">
-                            <form class="navbar-form" role="search">
-                                <div class="input-group">
-                                    <input type="text" ng-model="search.term" class="form-control" placeholder="Search" 
-                                           name="srch-term" id="srch-term">
-                                    <div class="input-group-btn">
-                                        <a class="btn btn-default" href="#/results" typeof="button">
-                                            <i ng-click="showSearchResults(search.term)" class="glyphicon glyphicon-search"></i>
-                                        </a>
-                                    </div>
-                                </div>
-                            </form>
-                        </div>
-                        <div class="col-sm-3 pull-right">
+                        <div class="col-sm-5 pull-right">
                             <ul class="nav navbar-nav navbar-right">
+                                <li>
+                                    <a href="#/search">Search</a>
+                                </li>
                                 <li ng-show="!currentuser">
                                     <a ng-click="openLogInModal()" href="">Log In</a>
                                 </li>

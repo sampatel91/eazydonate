@@ -1,11 +1,12 @@
 ﻿<div class="row">
     <div class="col-md-8 col-sm-10 col-lg-9 col-xs-10">
         <h1>{{charity.name}}</h1>
-        <p>{{charity.description}}
+        <p>
+            {{charity.description}}
         </p>
     </div>
-    <div ng-show="currentuser" 
-         class="col-md-2 col-sm-4 col-lg-3 col-xs-4">
+    <div ng-show="currentuser"
+         class="col-md-2 col-sm-2 col-lg-2 col-xs-1">
         <button ng-show="!isFollowed" class="btn btn-primary" ng-click="followCharity(charity._id)">Follow</button>
         <button ng-show="isFollowed" class="btn btn-success" ng-click="unfollowCharity(charity._id)">Unfollow</button>
     </div>
@@ -21,8 +22,8 @@
                     <h5>Enter Donation Amount</h5>
                 </div>
                 <div class="donation-panel">
-                    <input ng-model="donation.amount" type="text" class="form-control" placeholder="Donation Amount" />
-                    <button class="btn btn-primary" ng-click="openDonationModal($index, donation)" type="submit">Donate</button>
+                    <input ng-model="donation.amount" type="number" class="form-control" placeholder="Donation Amount" />
+                    <button ng-disabled="!donation.amount" class="btn btn-primary" ng-click="openDonationModal($index, donation)" type="submit">Donate</button>
                 </div>
 
             </div>
@@ -53,19 +54,19 @@
                                 </div>
                                 <div>
                                     <label for="description">Card Number:</label>
-                                    <input name="description" type="text">
+                                    <input name="description" type="number">
                                 </div>
                                 <div>
                                     <label for="description">Expiration:</label>
-                                    <input name="description" type="text">
+                                    <input name="description" type="number">
                                 </div>
                                 <div>
                                     <label for="description">CVV:</label>
-                                    <input name="description" type="text">
+                                    <input name="description" type="number">
                                 </div>
                                 <div>
                                     <label for="description">Zipcode:</label>
-                                    <input name="description" type="text">
+                                    <input name="description" type="number">
                                 </div>
                                 <h6>The Donation Amount: $ {{donation.amount}}</h6>
                             </form>
@@ -73,7 +74,8 @@
                     </div>
                     <div class="modal-footer">
                         <button id="close" type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
-                        <button id="confirmDel" type="button" class="btn btn-primary" ng-click="confirmPaymentInfo()">Confirm</button>
+                        <button id="confirmDel" type="button" class="btn btn-primary" 
+                                ng-click="confirmPaymentInfo(charity.name, donation.amount)">Confirm</button>
                     </div>
                 </div>
             </div>
