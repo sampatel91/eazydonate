@@ -271,7 +271,7 @@ app.controller("ProfileCtrl", function ($scope, $http, $rootScope, $location, $r
         currentuser.people.push(id);
         var uid = currentuser._id;
         var user = currentuser;
-        $http.put('/rest/user/' + uid, user)
+        $http.put('/rest/user/' + uid + '/people/' + id, user)
         .success(function (user) {
             $rootScope.currentuser = user;
             $scope.isFollowed = true;
@@ -284,7 +284,7 @@ app.controller("ProfileCtrl", function ($scope, $http, $rootScope, $location, $r
         var personRemoved = currentuser.people.splice(index, 1);
         var uid = currentuser._id;
         var user = currentuser;
-        $http.put('/rest/user/' + uid, currentuser)
+        $http.delete('/rest/user/' + uid + '/people/' + id, currentuser)
         .success(function (user) {
             $rootScope.currentuser = user;
             $scope.isFollowed = false;

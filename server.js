@@ -281,6 +281,44 @@ app.delete("/rest/user/:id", function (req, res) {
     });
 });
 
+
+app.put("/rest/user/:id/people/:userId", function (req, res) {
+    //var charity = req.params.body.charities;
+    console.log(req.params.body);
+    db.runCommand(
+    {
+        findAndModify: "users",
+        query: { _id: ObjectId(req.params.id) },
+        update: { $addToSet: { people: req.params.userId } },
+        new: true
+    }, function (err, response) {
+        res.json(response.value);
+    });
+    /*
+    var id = req.params.id;
+    UserModel.findById(id, function (err, user) {
+        user.update(req.body, function (err, count) {
+            UserModel.findById(id, function (err, user) {
+                res.json(user);
+            });
+        });
+    });*/
+});
+
+//Remove from favorites
+app.delete('/rest/user/:id/people/:userID', function (req, res) {
+    db.runCommand(
+    {
+        findAndModify: "users",
+        query: { _id: ObjectId(req.params.id) },
+        update: { $pull: { people: req.params.userID } },
+        new: true
+    }, function (err, response) {
+        res.json(response.value);
+    });
+});
+
+
 app.put("/rest/user/:id/charity/:charityId", function (req, res) {
     //var charity = req.params.body.charities;
     console.log(req.params.body);
