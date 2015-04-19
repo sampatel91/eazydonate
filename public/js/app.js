@@ -411,7 +411,7 @@ app.controller("CharityCtrl", function ($rootScope, $scope, $http) {
         var charityRemoved = currentuser.charities.splice(index, 1);
         var uid = currentuser._id;
         var user = currentuser;
-        $http.put('/rest/user/' + uid + '/charity/'+id, currentuser)
+        $http.delete('/rest/user/' + uid + '/charity/'+id, currentuser)
         .success(function (user) {
             $rootScope.currentuser = user;
             $scope.isFollowed = false;
