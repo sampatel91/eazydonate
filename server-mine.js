@@ -1,12 +1,8 @@
 ﻿var cookieParser = require('cookie-parser');
 var session = require('express-session');
 var mongoose = require('mongoose');
-var mongojs = require('mongojs');
 var connectionString = process.env.OPENSHIFT_MONGODB_DB_URL || 'mongodb://localhost/test';
-var ObjectId = mongojs.ObjectId;
-var db = mongojs(connectionString, ["users", "charities"]);
-mongoose.connect(connectionString);
-//var db = mongoose.connect(connectionString);
+var db = mongoose.connect(connectionString);
 var express = require('express');
 var app = express();
 app.use(express.static(__dirname + '/public'));
@@ -41,12 +37,19 @@ var CharitySchema = new mongoose.Schema({
     }],
     categories: [String],
     members: [String]
-}, {collection: 'charities'});
+});
 
 
-var UserModel = mongoose.model('User', UserSchema);
-var CharityModel = mongoose.model('Charities', CharitySchema);
+var UserModel = mongoose.model('UserModel', UserSchema);
+var CharityModel = mongoose.model('CharityModel', CharitySchema);
 
+var bodyParser = require('body-parser');
+var multer = require('multer');
+
+app.use(bodyParser.json()); // for parsing application/json
+app.use(bodyParser.urlencoded({ extended: true })); // for parsing application/x-www-form-urlencoded
+app.use(multer()); // for parsing multipart/form-data
+/*
 var admin = new UserModel({firstName: "Saumil", lastName: "Patel", gender: "Male", password: "561991", email: "spatel91@yahoo.com"});
 admin.save();
 var char1 = new CharityModel({
@@ -97,16 +100,7 @@ char3.save();
 char4.save();
 char5.save();
 char6.save();
-char7.save();
-
-
-
-var bodyParser = require('body-parser');
-var multer = require('multer');
-
-app.use(bodyParser.json()); // for parsing application/json
-app.use(bodyParser.urlencoded({ extended: true })); // for parsing application/x-www-form-urlencoded
-app.use(multer()); // for parsing multipart/form-data
+char7.save();*/
 
 passport.use(new LocalStrategy(
 function (email, password, done) {
@@ -181,9 +175,9 @@ app.get('/rest/category/:id', function (req, res) {
     
 });
 
-app.get('/rest/search/:name', function (req, res) {
-    var name = req.params.name;
-    CharityModel.find({ name: { $regex: name } },
+app.get('/rest/search/:id', function (req, res) {
+    var id = req.params.id;
+    CharityModel.find({ $text: { $search: id } },
         function (err, charities) {
             console.log(charities);
             res.json(charities);
@@ -281,19 +275,7 @@ app.delete("/rest/user/:id", function (req, res) {
     });
 });
 
-app.put("/rest/user/:id/charity/:charityId", function (req, res) {
-    //var charity = req.params.body.charities;
-    console.log(req.params.body);
-    db.runCommand(
-    {
-        findAndModify: "users",
-        query: { _id: ObjectId(req.params.id) },
-        update: { $addToSet: { charities: req.params.charityId } },
-        new: true
-    }, function (err, response) {
-        res.json(response.value);
-    });
-    /*
+app.put("/rest/user/:id", function (req, res) {
     var id = req.params.id;
     UserModel.findById(id, function (err, user) {
         user.update(req.body, function (err, count) {
@@ -301,19 +283,6 @@ app.put("/rest/user/:id/charity/:charityId", function (req, res) {
                 res.json(user);
             });
         });
-    });*/
-});
-
-//Remove from favorites
-app.delete('/rest/user/:id/charity/:charityID', function (req, res) {
-    db.runCommand(
-    {
-        findAndModify: "users",
-        query: { _id: ObjectId(req.params.id) },
-        update: { $pull: { favoritePlayers: req.params.charityID } },
-        new: true
-    }, function (err, response) {
-        res.json(response.value);
     });
 });
 

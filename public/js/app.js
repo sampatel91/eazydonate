@@ -392,7 +392,7 @@ app.controller("CharityCtrl", function ($rootScope, $scope, $http) {
         currentuser.charities.push(id);
         var uid = currentuser._id;
         var user = currentuser;
-        $http.put('/rest/user/' + uid, user)
+        $http.put('/rest/user/' + uid +'/charity/'+id, user)
         .success(function (user) {
             $rootScope.currentuser = user;
             $scope.isFollowed = true;
@@ -411,7 +411,7 @@ app.controller("CharityCtrl", function ($rootScope, $scope, $http) {
         var charityRemoved = currentuser.charities.splice(index, 1);
         var uid = currentuser._id;
         var user = currentuser;
-        $http.put('/rest/user/' + uid, currentuser)
+        $http.put('/rest/user/' + uid + '/charity/'+id, currentuser)
         .success(function (user) {
             $rootScope.currentuser = user;
             $scope.isFollowed = false;
