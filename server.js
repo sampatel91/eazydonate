@@ -310,7 +310,7 @@ app.delete('/rest/user/:id/charity/:charityID', function (req, res) {
     {
         findAndModify: "users",
         query: { _id: ObjectId(req.params.id) },
-        update: { $pull: { favoritePlayers: req.params.charityID } },
+        update: { $pull: { charities: req.params.charityID } },
         new: true
     }, function (err, response) {
         res.json(response.value);
