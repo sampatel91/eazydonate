@@ -245,18 +245,34 @@ app.controller("ProfileCtrl", function ($scope, $http, $rootScope, $location, $r
         });
     };
 
-    $scope.deleteFavorite = function (id) {
+    $scope.deleteCharity = function (id) {
         var currentuser = $rootScope.currentuser;
         var index = currentuser.charities.indexOf(id);
         var charityRemoved = currentuser.charities.splice(index, 1);
         var uid = currentuser._id;
-        $http.put('/rest/user/' + uid, currentuser)
+        $http.delete('/rest/user/' + uid + '/charity/' + id, currentuser)
         .success(function (user) {
             $rootScope.currentuser = user;
             $http.get('/rest/charities/lookup/' + user._id)
             .success(function (charities) {
                 console.log(charities);
                 $scope.charities = charities;
+            });
+        });
+    };
+
+    $scope.deletePerson = function (id) {
+        var currentuser = $rootScope.currentuser;
+        var index = currentuser.charities.indexOf(id);
+        var charityRemoved = currentuser.charities.splice(index, 1);
+        var uid = currentuser._id;
+        $http.delete('/rest/user/' + uid + '/people/' + id, currentuser)
+        .success(function (user) {
+            $rootScope.currentuser = user;
+            $http.get('/rest/people/lookup/' + user._id)
+            .success(function (charities) {
+                console.log(charities);
+                $scope.people = charities;
             });
         });
     };
@@ -399,7 +415,7 @@ app.controller("CharityCtrl", function ($rootScope, $scope, $http) {
         });
         var charity = $scope.charity;
         charity.members.push(uid);
-        $http.put('/rest/charity/' + charityId, charity)
+        $http.put('/rest/charity/' + charityId + '/member/' + uid, charity)
         .success(function (charity) {
             $scope.charity = charity;
         });
@@ -415,6 +431,10 @@ app.controller("CharityCtrl", function ($rootScope, $scope, $http) {
         .success(function (user) {
             $rootScope.currentuser = user;
             $scope.isFollowed = false;
+        });
+        $http.delete('/rest/charity/' + charityId + '/member/' + uid, charity)
+        .success(function (charity) {
+            $scope.charity = charity;
         });
     };
 

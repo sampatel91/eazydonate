@@ -281,6 +281,30 @@ app.delete("/rest/user/:id", function (req, res) {
     });
 });
 
+app.put("/rest/charity/:id/member/:userId", function (req, res) {
+    db.runCommand(
+    {
+        findAndModify: "charities",
+        query: { _id: ObjectId(req.params.id) },
+        update: { $addToSet: { member: req.params.userId } },
+        new: true
+    }, function (err, response) {
+        res.json(response.value);
+    });
+});
+
+//Remove from favorites
+app.delete('/rest/user/:id/member/:userID', function (req, res) {
+    db.runCommand(
+    {
+        findAndModify: "charities",
+        query: { _id: ObjectId(req.params.id) },
+        update: { $pull: { member: req.params.userID } },
+        new: true
+    }, function (err, response) {
+        res.json(response.value);
+    });
+});
 
 app.put("/rest/user/:id/people/:userId", function (req, res) {
     //var charity = req.params.body.charities;
@@ -294,15 +318,6 @@ app.put("/rest/user/:id/people/:userId", function (req, res) {
     }, function (err, response) {
         res.json(response.value);
     });
-    /*
-    var id = req.params.id;
-    UserModel.findById(id, function (err, user) {
-        user.update(req.body, function (err, count) {
-            UserModel.findById(id, function (err, user) {
-                res.json(user);
-            });
-        });
-    });*/
 });
 
 //Remove from favorites
