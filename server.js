@@ -253,7 +253,7 @@ app.get('/rest/user/lookup/:id', function (req, res) {
     var id = req.params.id;
     CharityModel.findOne({ _id: id }, function (err, charity) {
         var members = charity.members;
-        var ids = members.map(function (id) { return id });
+        var ids = members.map(function (id) { return ObjectId(id) });
         UserModel.find({ _id: { $in: ids } }, function (err, users) {
             res.json(users);
         });
