@@ -18,6 +18,7 @@ app.use(cookieParser())
 app.use(passport.initialize());
 app.use(passport.session());
 
+//Schema for Users
 var UserSchema = new mongoose.Schema({
     firstName: String,
     lastName: String,
@@ -28,7 +29,7 @@ var UserSchema = new mongoose.Schema({
     people: [String]
 });
 
-
+//Schema for Charity
 var CharitySchema = new mongoose.Schema({
     name: String,
     description: String,
@@ -132,70 +133,6 @@ passport.deserializeUser(function (user, done) {
     done(null, user);
 });
 
-
-
-var categories = ["Education", "Shelter", "Food", "Health", "Cancer"];
-//var charities = ["Red Cross", "UNICEF", "WHO", "Gates Foundation", "Blue Shield"];
-
-
-
-// GET
-// /api/courses
-// Retrieves all courses
-app.get('/rest/charities', function (req, res) {
-    CharityModel.find(function (err, charities) {
-        res.json(charities);
-    });
-    
-});
-
-app.get('/rest/charities/lookup/:id', function (req, res) {
-    var id = req.params.id;
-    UserModel.findOne({ _id: id }, function (err, user) {
-        var charities = user.charities;
-        var ids = charities.map(function (id) { return id });
-        CharityModel.find({ _id: { $in: ids } }, function (err, charities) {
-            res.json(charities);
-        });
-    });
-});
-
-app.get('/rest/charities/:id', function (req, res) {
-    var id = req.params.id;
-    CharityModel.findOne({_id: id},function (err, charity) {
-        res.json(charity);
-    });
-
-});
-
-app.get('/rest/categories', function (req, res) {
-    res.json(categories);
-});
-
-app.get('/rest/category/:id', function (req, res) {
-    var id = req.params.id;
-    CharityModel.find({ categories: id }, function (err, charities) {
-        res.json(charities);
-    });
-    
-});
-
-app.get('/rest/search/:name', function (req, res) {
-    var name = req.params.name;
-    CharityModel.find({ name: { $regex: name, $options: 'i' } },
-    /*
-    CharityModel.find({
-        $or: [{ name: { $regex: name, $options: 'i' } },
-            { description: { $regex: name, $options: 'i' } },
-        { categories: { $regex: name, $options: 'i' } }]
-    },*/
-    function (err, charities) {
-        console.log(charities);
-        res.json(charities);
-    });
-    
-});
-
 app.post("/login", passport.authenticate('local'), function (req, res) {
     //console.log(req.user);
     //res.json(req.user);
@@ -241,12 +178,79 @@ app.post('/register', function (req, res) {
 });
 
 
+
+var categories = ["Education", "Shelter", "Food", "Health", "Cancer"];
+//var charities = ["Red Cross", "UNICEF", "WHO", "Gates Foundation", "Blue Shield"];
+
+
+//return all the charities
+app.get('/rest/charities', function (req, res) {
+    CharityModel.find(function (err, charities) {
+        res.json(charities);
+    });
+    
+});
+
+//return charities followed by a user of provided ID
+app.get('/rest/charities/lookup/:id', function (req, res) {
+    var id = req.params.id;
+    UserModel.findOne({ _id: id }, function (err, user) {
+        var charities = user.charities;
+        var ids = charities.map(function (id) { return id });
+        CharityModel.find({ _id: { $in: ids } }, function (err, charities) {
+            res.json(charities);
+        });
+    });
+});
+
+//return charity with given ID 
+app.get('/rest/charities/:id', function (req, res) {
+    var id = req.params.id;
+    CharityModel.findOne({_id: id},function (err, charity) {
+        res.json(charity);
+    });
+
+});
+
+//return all of the categories
+app.get('/rest/categories', function (req, res) {
+    res.json(categories);
+});
+
+//find all the categories of a charity with given ID
+app.get('/rest/category/:id', function (req, res) {
+    var id = req.params.id;
+    CharityModel.find({ categories: id }, function (err, charities) {
+        res.json(charities);
+    });
+    
+});
+
+//return result for the search term
+app.get('/rest/search/:name', function (req, res) {
+    var name = req.params.name;
+    CharityModel.find({ name: { $regex: name, $options: 'i' } },
+    /*
+    CharityModel.find({
+        $or: [{ name: { $regex: name, $options: 'i' } },
+            { description: { $regex: name, $options: 'i' } },
+        { categories: { $regex: name, $options: 'i' } }]
+    },*/
+    function (err, charities) {
+        console.log(charities);
+        res.json(charities);
+    });
+    
+});
+
+//return all of the users
 app.get("/rest/user", function (req, res) {
     UserModel.find(function (err, users) {
         res.json(users);
     });
 });
 
+//return user with the given ID
 app.get('/rest/user/:id', function (req, res) {
     var id = req.params.id;
     UserModel.findOne({ _id: id }, function (err, user) {
@@ -255,6 +259,7 @@ app.get('/rest/user/:id', function (req, res) {
 
 });
 
+//returns all of the members of a charity with the give ID
 app.get('/rest/user/lookup/:id', function (req, res) {
     var id = req.params.id;
     CharityModel.findOne({ _id: id }, function (err, charity) {
@@ -264,6 +269,7 @@ app.get('/rest/user/lookup/:id', function (req, res) {
     });
 });
 
+//returns all of the user followed by the user with given ID
 app.get('/rest/people/lookup/:id', function (req, res) {
     var id = req.params.id;
     UserModel.findOne({ _id: id }, function (err, user) {
@@ -275,6 +281,7 @@ app.get('/rest/people/lookup/:id', function (req, res) {
     });
 });
 
+//delets the user with given ID
 app.delete("/rest/user/:id", function (req, res) {
     var id = req.params.id;
     UserModel.remove({_id: id}, function (err, count) {
@@ -284,6 +291,7 @@ app.delete("/rest/user/:id", function (req, res) {
     });
 });
 
+//adds a new member with ID to a charity with given charity ID
 app.put("/rest/charity/:id/member/:userId", function (req, res) {
     db.runCommand(
     {
@@ -296,8 +304,8 @@ app.put("/rest/charity/:id/member/:userId", function (req, res) {
     });
 });
 
-//Remove from favorites
-app.delete('/rest/user/:id/member/:userID', function (req, res) {
+//Remove a user with given userID from a charity with given ID
+app.delete('/rest/charity/:id/member/:userID', function (req, res) {
     db.runCommand(
     {
         findAndModify: "charities",
@@ -309,9 +317,8 @@ app.delete('/rest/user/:id/member/:userID', function (req, res) {
     });
 });
 
+//adds a user to people followed by user with given id
 app.put("/rest/user/:id/people/:userId", function (req, res) {
-    //var charity = req.params.body.charities;
-    console.log(req.params.body);
     db.runCommand(
     {
         findAndModify: "users",
@@ -323,7 +330,7 @@ app.put("/rest/user/:id/people/:userId", function (req, res) {
     });
 });
 
-//Remove from favorites
+//Removes a user to people followed by user with given id
 app.delete('/rest/user/:id/people/:userID', function (req, res) {
     db.runCommand(
     {
@@ -336,10 +343,8 @@ app.delete('/rest/user/:id/people/:userID', function (req, res) {
     });
 });
 
-
+//adds a charity with given ID to a list of charities followed by given user ID
 app.put("/rest/user/:id/charity/:charityId", function (req, res) {
-    //var charity = req.params.body.charities;
-    console.log(req.params.body);
     db.runCommand(
     {
         findAndModify: "users",
@@ -349,18 +354,9 @@ app.put("/rest/user/:id/charity/:charityId", function (req, res) {
     }, function (err, response) {
         res.json(response.value);
     });
-    /*
-    var id = req.params.id;
-    UserModel.findById(id, function (err, user) {
-        user.update(req.body, function (err, count) {
-            UserModel.findById(id, function (err, user) {
-                res.json(user);
-            });
-        });
-    });*/
 });
 
-//Remove from favorites
+//Removes a charity with given ID to a list of charities followed by given user ID
 app.delete('/rest/user/:id/charity/:charityID', function (req, res) {
     db.runCommand(
     {
@@ -373,6 +369,7 @@ app.delete('/rest/user/:id/charity/:charityID', function (req, res) {
     });
 });
 
+//updates a charity with a given charity
 app.put("/rest/charity/:id", function (req, res) {
     var id = req.params.id;
     CharityModel.findById(id, function (err, charity) {
@@ -391,38 +388,7 @@ var auth = function (req, res, next) {
         next();
 };
 
-
 /*
-app.put("/rest/user/:id", auth, function (req, res) {
-    UserModel.findById(req.params.id, function (err, user) {
-        user.update(req.body, function (err, count) {
-            UserModel.find(function (err, users) {
-                res.json(users);
-            });
-        });
-    });
-});
-
-app.post("/rest/user", auth, function (req, res) {
-    UserModel.findOne({ username: req.body.username }, function (err, user) {
-        if (user == null) {
-            user = new UserModel(req.body);
-            user.save(function (err, user) {
-                UserModel.find(function (err, users) {
-                    res.json(users);
-                });
-            });
-        }
-        else {
-            UserModel.find(function (err, users) {
-                res.json(users);
-            });
-        }
-    });
-});*/
-
-/*
-
 MongoDB 2.4 database added.  Please make note of these credentials:
 
    Root User:     admin

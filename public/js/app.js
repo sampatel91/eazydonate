@@ -6,27 +6,26 @@ app.config(['$routeProvider',
   function ($routeProvider, $httpProvider) {
       $routeProvider.
         when('/home', {
-            templateUrl: 'pages/home.html',
+            templateUrl: 'pages/home/home.html',
             controller: 'HomeCtrl'
         }).
         when('/profile', {
-            templateUrl: 'pages/profile.html',
+            templateUrl: 'pages/profile/profile.html',
             controller: 'ProfileCtrl',
             resolve: {
                 loggedin: checkLoggedin
             }
         }).
         when('/results', {
-            templateUrl: 'pages/result-page.html',
+            templateUrl: 'pages/results/result-page.html',
             controller: 'ResultCtrl'
         }).
         when('/charity', {
-            templateUrl: 'pages/charity-page.html',
+            templateUrl: 'pages/charity/charity-page.html',
             controller: 'CharityCtrl'
         }).
         when('/logout', {
-            templateUrl: 'pages/logout.html',
-            controller: 'LogoutCtrl'
+            templateUrl: 'pages/logout/logout.html'
         }).
         otherwise({
             redirectTo: '/home'
@@ -52,15 +51,6 @@ var checkLoggedin = function ($q, $timeout, $http, $location, $rootScope) {
 
     return deferred.promise;
 };
-
-app.factory("DonateService", function ($http) {
-    var findCharityByTitle = function (title, callback) {
-        var url = "";
-        $http.jsonp(url)
-        .success(callback);
-    };
-
-});
 
 app.controller("NavbarCtrl", function ($scope, $http, $location, $rootScope, $route) {
 
@@ -186,309 +176,10 @@ app.controller("NavbarCtrl", function ($scope, $http, $location, $rootScope, $ro
 
 });
 
-app.controller("ProfileCtrl", function ($scope, $http, $rootScope, $location, $route) {
-    var currentuser = $rootScope.currentuser;
-    var uid = currentuser._id;
-
-    var id = $rootScope.userId;
-    if (id && uid !== id) {
-        $http.get('/rest/user/' + id)
-        .success(function (user) {
-            if (user) {
-                $scope.user = user;
-                uid = user._id;
-                $scope.isFollowed($scope.user);
-            }
-            else {
-                $scope.user = currentuser;
-                $scope.isFollowed($scope.user);
-            }
-        });
-    }
-
-    if (!id || uid == id) {
-        $scope.user = currentuser;
-    }
-    
-    $scope.isFollowed = function (user) {
-        if (user && currentuser.people && user._id !== currentuser._id) {
-            var people = currentuser.people;
-            var id = user._id;
-            $scope.isFollowed = false;
-            for (index = people.length - 1; index >= 0; --index) {
-                if (people[index] == id) {
-                    $scope.isFollowed = true;
-                }
-            }
-        }
-    }
-    
-
-    $http.get('/rest/charities/lookup/'+ uid)
-    .success(function (charities) {
-        console.log(charities);
-        $scope.charities = charities;
-    });
-
-    $http.get('/rest/people/lookup/' + uid)
-    .success(function (people) {
-        console.log(people);
-        $scope.people = people;
-    });
-
-
-    $scope.deleteAccount = function (id) {
-        $http.delete('/rest/user/' + id)
-        .success(function (users) {
-            $rootScope.currentuser = null;
-            $location.url('/home');
-        });
-    };
-
-    $scope.deleteCharity = function (id) {
-        var currentuser = $rootScope.currentuser;
-        var index = currentuser.charities.indexOf(id);
-        var charityRemoved = currentuser.charities.splice(index, 1);
-        var uid = currentuser._id;
-        $http.delete('/rest/user/' + uid + '/charity/' + id, currentuser)
-        .success(function (user) {
-            $rootScope.currentuser = user;
-            $http.get('/rest/charities/lookup/' + user._id)
-            .success(function (charities) {
-                console.log(charities);
-                $scope.charities = charities;
-            });
-        });
-    };
-
-    $scope.deletePerson = function (id) {
-        var currentuser = $rootScope.currentuser;
-        var index = currentuser.charities.indexOf(id);
-        var charityRemoved = currentuser.charities.splice(index, 1);
-        var uid = currentuser._id;
-        $http.delete('/rest/user/' + uid + '/people/' + id, currentuser)
-        .success(function (user) {
-            $rootScope.currentuser = user;
-            $http.get('/rest/people/lookup/' + user._id)
-            .success(function (charities) {
-                console.log(charities);
-                $scope.people = charities;
-            });
-        });
-    };
-
-    $scope.openCharityPage = function (charity) {
-        $rootScope.charityId = charity._id;
-        $location.url('/charity');
-    };
-
-    $scope.followUser = function (id) {
-        var currentuser = $rootScope.currentuser;
-        currentuser.people.push(id);
-        var uid = currentuser._id;
-        var user = currentuser;
-        $http.put('/rest/user/' + uid + '/people/' + id, user)
-        .success(function (user) {
-            $rootScope.currentuser = user;
-            $scope.isFollowed = true;
-        });
-    };
-
-    $scope.unfollowUser = function (id) {
-        var currentuser = $rootScope.currentuser;
-        var index = currentuser.people.indexOf(id);
-        var personRemoved = currentuser.people.splice(index, 1);
-        var uid = currentuser._id;
-        var user = currentuser;
-        $http.delete('/rest/user/' + uid + '/people/' + id, currentuser)
-        .success(function (user) {
-            $rootScope.currentuser = user;
-            $scope.isFollowed = false;
-        });
-    };
-
-    $scope.openProfile = function (id) {
-        $rootScope.userId = id;
-        $route.reload();
-    };
-})
 
 
 
-app.controller("LogoutCtrl", function ($scope, $http, $rootScope) {
-
-    /*
-    $http.get("/rest/user")
-    .success(function (users) {
-        $scope.users = users;
-    });
-
-    $scope.removeUser = function (id) {
-        console.log("remove");
-        $http.delete("/rest/user/"+ id)
-        .success(function (users) {
-            $scope.users = users;
-        });
-    }*/
-    
-})
-
-app.controller("HomeCtrl", function ($scope, $http, $rootScope, $location) {
-    $rootScope.userId = null;
-    if ($rootScope.currentuser && $rootScope.currentuser.charities) {
-        var currentuser = $rootScope.currentuser;
-        var uid = currentuser._id;
-        $http.get('/rest/charities/lookup/' + uid)
-        .success(function (charities) {
-            console.log(charities);
-            $scope.favcharities = charities;
-        });
-    }
-
-    $http.get("/rest/charities?limit=1&full=true")
-    .success(function (response) {
-        $scope.charities = response;
-    });
-
-    
-    
-
-    $http.get("/rest/categories")
-    .success(function (response) {
-        $scope.categories = response;
-    });
-
-    $scope.openCharityPage = function (charity) {
-        $rootScope.charityId = charity._id;
-        $location.url('/charity');
-    };
-
-    $scope.findCharities = function (category) {
-        $rootScope.category = category;
-    };
-
-});
-
-app.controller("CharityCtrl", function ($rootScope, $scope, $http) {
-    
-    var currentuser = $rootScope.currentuser;
-    if (currentuser && currentuser.charities) {
-        var charities = currentuser.charities;
-        var id = $rootScope.charityId;
-        $scope.isFollowed = false;
-        for (index = charities.length - 1; index >= 0; --index) {
-            if(charities[index] == id){
-                $scope.isFollowed = true;
-            }
-        }
-        /*
-        charities.forEach(function (charity) {
-            if (charity == id) {
-                $scope.isFollowed = true;
-            }
-        });*/
-        
-    }
-
-    var charityId = $rootScope.charityId;
-    $http.get('/rest/charities/' + charityId)
-    .success(function (charity) {
-        console.log(charity);
-        $scope.charity = charity;
-        //$scope.members = charity.members;
-    });
-    
-    $http.get('/rest/user/lookup/' + charityId)
-    .success(function (members) {
-        console.log(members);
-        $scope.members = members;
-    });
-
-    $scope.followCharity = function (id) {
-        var currentuser = $rootScope.currentuser;
-        currentuser.charities.push(id);
-        var uid = currentuser._id;
-        var user = currentuser;
-        $http.put('/rest/user/' + uid +'/charity/'+id, user)
-        .success(function (user) {
-            $rootScope.currentuser = user;
-            $scope.isFollowed = true;
-        });
-        var charity = $scope.charity;
-        charity.members.push(uid);
-        $http.put('/rest/charity/' + charityId + '/member/' + uid, charity)
-        .success(function (charity) {
-            $scope.charity = charity;
-        });
-    };
-
-    $scope.unfollowCharity = function (id) {
-        var currentuser = $rootScope.currentuser;
-        var index = currentuser.charities.indexOf(id);
-        var charityRemoved = currentuser.charities.splice(index, 1);
-        var uid = currentuser._id;
-        var user = currentuser;
-        $http.delete('/rest/user/' + uid + '/charity/'+id, currentuser)
-        .success(function (user) {
-            $rootScope.currentuser = user;
-            $scope.isFollowed = false;
-        });
-        $http.delete('/rest/charity/' + charityId + '/member/' + uid, charity)
-        .success(function (charity) {
-            $scope.charity = charity;
-        });
-    };
-
-    $scope.openDonationModal = function ($index, donation) {
-        $('#donationModal').modal('show');
-        console.log(donation);
-    };
-
-    $scope.confirmPaymentInfo = function () {
-        $('#donationModal').modal('hide');
-    };
-
-    $scope.openProfile = function (id) {
-        $rootScope.userId = id;
-    };
-
-    /*
-    $scope.showResultsPage = function ($index, name) {
-        var $panel = $('#center-panel');
-        $panel.empty();
-        $panel.load('result-page.html');
-    };
-
-    $scope.openCharityPage = function ($index, name) {
-        var $panel = $('#center-panel');
-        $panel.empty();
-        $panel.load('charity-page.html');
-    };*/
-
-});
 
 
-app.controller("ResultCtrl", function ($scope, $http, $rootScope, $location) {
-    var category = $rootScope.category;
-    var search = $rootScope.search;
-    console.log(category);
 
-    if (search) {
-        $http.get('/rest/search/' + search)
-        .success(function (results) {
-            $scope.results = results;
-        });
-    } else {
-        $http.get('/rest/category/' + category)
-        .success(function (charities) {
-            console.log(charities);
-            $scope.results = charities;
-        });
-    }
 
-    $scope.showCharityPage = function (id) {
-        $rootScope.charityId = id;
-        $location.url('/charity');
-    };
-
-});
