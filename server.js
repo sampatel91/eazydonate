@@ -182,11 +182,15 @@ app.get('/rest/category/:id', function (req, res) {
 
 app.get('/rest/search/:name', function (req, res) {
     var name = req.params.name;
-    CharityModel.find({ name: { $regex: name } },
-        function (err, charities) {
-            console.log(charities);
-            res.json(charities);
-    })
+    CharityModel.find({
+        $or: [{ name: { $regex: name, $options: 'i' } },
+            { description: { $regex: name, $options: 'i' } },
+        { categories: { $regex: name, $options: 'i' } }]
+    },
+    function (err, charities) {
+        console.log(charities);
+        res.json(charities);
+    });
     
 });
 
