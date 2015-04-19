@@ -395,8 +395,9 @@ app.controller("CharityCtrl", function ($rootScope, $scope, $http) {
     .success(function (charity) {
         console.log(charity);
         $scope.charity = charity;
+        //$scope.members = charity.members;
     });
-
+    
     $http.get('/rest/user/lookup/' + charityId)
     .success(function (members) {
         console.log(members);

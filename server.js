@@ -252,9 +252,7 @@ app.get('/rest/user/:id', function (req, res) {
 app.get('/rest/user/lookup/:id', function (req, res) {
     var id = req.params.id;
     CharityModel.findOne({ _id: id }, function (err, charity) {
-        var members = charity.members;
-        var ids = members.map(function (id) { return ObjectId(id) });
-        UserModel.find({ _id: { $in: ids } }, function (err, users) {
+        UserModel.find({ _id: { $in: charity.members } }, function (err, users) {
             res.json(users);
         });
     });
@@ -285,7 +283,7 @@ app.put("/rest/charity/:id/member/:userId", function (req, res) {
     {
         findAndModify: "charities",
         query: { _id: ObjectId(req.params.id) },
-        update: { $addToSet: { member: req.params.userId } },
+        update: { $addToSet: { members: req.params.userId } },
         new: true
     }, function (err, response) {
         res.json(response.value);
@@ -298,7 +296,7 @@ app.delete('/rest/user/:id/member/:userID', function (req, res) {
     {
         findAndModify: "charities",
         query: { _id: ObjectId(req.params.id) },
-        update: { $pull: { member: req.params.userID } },
+        update: { $pull: { members: req.params.userID } },
         new: true
     }, function (err, response) {
         res.json(response.value);
