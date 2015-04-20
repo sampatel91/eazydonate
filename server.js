@@ -47,7 +47,7 @@ var CharitySchema = new mongoose.Schema({
 
 var UserModel = mongoose.model('User', UserSchema);
 var CharityModel = mongoose.model('Charities', CharitySchema);
-
+/*
 var admin = new UserModel({firstName: "Saumil", lastName: "Patel", gender: "Male", password: "561991", email: "spatel91@yahoo.com"});
 admin.save();
 var char1 = new CharityModel({
@@ -99,7 +99,7 @@ char4.save();
 char5.save();
 char6.save();
 char7.save();
-
+*/
 
 
 var bodyParser = require('body-parser');
@@ -179,8 +179,8 @@ app.post('/register', function (req, res) {
 });
 
 
-
-var categories = ["Education", "Shelter", "Food", "Health", "Cancer"];
+var categories = ["Humanity", "Education", "Food", "Health", "Animals", "Social", "Religion"];
+//var categories = ["Education", "Shelter", "Food", "Health", "Cancer"];
 //var charities = ["Red Cross", "UNICEF", "WHO", "Gates Foundation", "Blue Shield"];
 
 
