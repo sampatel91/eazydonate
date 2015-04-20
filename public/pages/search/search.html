@@ -16,8 +16,8 @@
 <div class="row" ng-show="results.length">
     <div class="panel panel-default">
         <div class="panel-heading">
-            <h2 ng-show="category" class="panel-title">{{category}}</h2>
-            <h2 ng-hide="category" class="panel-title">Search Results for: {{search}}</h2>
+            <h2 ng-show="category" class="panel-title">Category Search for: {{category}}</h2>
+            <h2 ng-hide="category" class="panel-title">Search Results for: {{searchTitle}}</h2>
         </div>
         <div class="list-group page-links">
             <a ng-repeat="result in results" ng-click="showCharityPage(result._id)"

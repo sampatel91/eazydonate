@@ -16,10 +16,6 @@ app.config(['$routeProvider',
                 loggedin: checkLoggedin
             }
         }).
-        when('/results', {
-            templateUrl: 'pages/results/result-page.html',
-            controller: 'ResultCtrl'
-        }).
         when('/charity', {
             templateUrl: 'pages/charity/charity-page.html',
             controller: 'CharityCtrl'
